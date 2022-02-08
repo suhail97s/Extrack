@@ -1,5 +1,20 @@
 {
-    "name" : "Extrack",
-    "version" : "1.0",
-    "manifest_version" : 2
+
+  "manifest_version": 2,
+  "name": "Extrack",
+  "version": "1.0",
+
+  "description": "Analyse browser extension installed",
+
+  "icons": {
+    "48": "icons/border-48.png"
+  },
+
+  "content_scripts": [
+    {
+      "matches": ["*://*/*"],
+      "js": ["extrack.js"]
+    }
+  ]
+
 }
