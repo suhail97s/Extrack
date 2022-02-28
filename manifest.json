@@ -1,11 +1,16 @@
 {
-
+  "browser_action": {
+    "default_title": "Extrack",
+    "default_popup": "extrack.html",
+    "browser_style": true
+  },
   "manifest_version": 2,
   "name": "Extrack",
   "version": "1.0",
-
   "description": "Analyse browser extension installed",
-
+  "permissions": [
+    "management"
+  ],
   "icons": {
     "48": "icons/border-48.png"
   },
@@ -13,8 +18,7 @@
   "content_scripts": [
     {
       "matches": ["*://*/*"],
-      "js": ["extrack.js"]
+      "js": ["red.js"]
     }
   ]
-
 }
