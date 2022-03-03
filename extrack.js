@@ -1,20 +1,28 @@
-//document.body.style.border = "5px solid red";
-
-var extensionList = document.getElementById('extension-list');
+// var extensionList = document.getElementById('extension-list');
+var list = document.getElementById("myList");
+var table = document.getElementById("table");
 
 function analyseExtension(e) {
   //browser.management.setEnabled(e.target.value, true);
   // parse extension id to find more info
   //alert(management.ExtensionInfo(e.target.value))
-
-  var table = document.getElementById("myTable");
-  var row = table.insertRow(1);
-  var cell1 = row.insertCell(0);
-  var cell2 = row.insertCell(1);
+  if (e.target.type === "button")
+  {
+    if (list.style.display === "block")
+    {
+      list.style.display = "none";
+      table.style.display = "block";
+    }
+  }
+  console.log(e.target);
+  let extName = document.getElementById("extName");
+  let extPerms = document.getElementById("extPerms");
   var getting = browser.management.get(e.target.value);
   getting.then(info =>{
-    cell1.innerHTML = info.name;
-    cell2.innerHTML = info.permissions;
+    extName.innerHTML = info.name;
+    console.log(info.name);
+    extPerms.innerHTML = info.permissions;
+    console.log(info.permissions);
     // info.installType
     // "admin": the add-on was installed because of an administrative policy.
     // "development": the add-on was installed unpacked from disk.
@@ -26,23 +34,40 @@ function analyseExtension(e) {
     // info.permissions
     // info.homepageUrl
   });  
-  document.createElement()
-  e.preventDefault();
-  window.close();
+  // e.preventDefault();
+  // window.close();
 }
-
+function showExtensionList(e)
+{
+  console.log(e.target.type);
+  if (e.target.type === "button")
+  {
+    if (list.style.display === "none")
+    {
+      list.style.display = "block";
+      table.style.display = "none";
+    }
+  }
+}
 browser.management.getAll().then((extensions) => {
   for (let extension of extensions) {
     if (extension.type !== 'extension') {
       continue;
     }
-    let option = document.createElement('option');
-    option.textContent = extension.name;
-    option.value = extension.id;
     if (extension.enabled) {
-      option.selected = true;
+      let divListItem = document.createElement("button")
+      divListItem.type = "button"
+      divListItem.className = "text-dark list-group-item list-group-item-action list-group-item-light"
+      divListItem.id = extension.name
+      divListItem.value = extension.id
+      divListItem.innerText = extension.name;
+      list.appendChild(divListItem);
     }
-    extensionList.appendChild(option);
   }
 });
-extensionList.addEventListener('change', analyseExtension)
+let backBtn = document.getElementById("backBtn");
+//change to onclick
+list.addEventListener('click', analyseExtension);
+backBtn.addEventListener('click', showExtensionList);
+
+
