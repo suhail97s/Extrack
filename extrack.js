@@ -15,6 +15,10 @@ function analyseExtension(e) {
     }
   }
   console.log(e.target);
+  // let HName = document.getElementById("HName");
+  // HName.innerHTML = "Name";
+  // let HPerms = document.getElementById("HPerms");
+  // HPerms.innerHTML = "Permissions";
   let extName = document.getElementById("extName");
   let extPerms = document.getElementById("extPerms");
   var getting = browser.management.get(e.target.value);
@@ -34,8 +38,6 @@ function analyseExtension(e) {
     // info.permissions
     // info.homepageUrl
   });  
-  // e.preventDefault();
-  // window.close();
 }
 function showExtensionList(e)
 {
