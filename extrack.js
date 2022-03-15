@@ -2,6 +2,7 @@
 var list = document.getElementById("myList");
 var table = document.getElementById("table");
 
+
 function analyseExtension(e) {
   //browser.management.setEnabled(e.target.value, true);
   // parse extension id to find more info
@@ -68,7 +69,7 @@ browser.management.getAll().then((extensions) => {
   }
 });
 let backBtn = document.getElementById("backBtn");
-//change to onclick
+//change to onclicks
 list.addEventListener('click', analyseExtension);
 backBtn.addEventListener('click', showExtensionList);
 
@@ -85,9 +86,66 @@ let observer = new MutationObserver((mutations) => {
 
 
 
+
 observer.observe(document.body, {
   characterDataOldValue: true, 
   subtree: true, 
   childList: true, 
   characterData: true
 });
+
+//to enable all extensions
+var extCheckbox = document.getElementById("extCheckbox");
+// var extCheckbox = document.querySelector("input[id='extCheckbox']")
+
+
+
+function checkboxTrue() {
+  
+  browser.management.getAll().then((extensions) => {
+    for (let extension of extensions) {
+      if (extension.type !== 'extension') {
+        continue;
+      }
+      if (extension.enabled) {
+        browser.management.setEnabled(extension.id, false)
+      }
+    }
+  });
+}
+
+function checkboxFalse() {
+  
+  browser.management.getAll().then((extensions) => {
+    for (let extension of extensions) {
+      if (extension.type !== 'extension') {
+        continue;
+      }
+      if (!extension.enabled) {
+        browser.management.setEnabled(extension.id, true)
+      }
+    }
+  });
+}
+
+// extCheckbox.addEventListener("onchange", () => {
+//   if (extCheckbox.checked == true) {
+//     checkboxTrue();
+//     console.log("All extensions have been disabled.");
+//   } else {
+//     checkboxFalse();
+//     console.log("All extensions have been enabled.");
+//   }
+// });
+
+
+function changeCheckbox() {
+  if (extCheckbox.checked == true) {
+    checkboxTrue();
+    console.log("All extensions have been disabled.");
+  } else {
+    checkboxFalse();
+    console.log("All extensions have been enabled.");
+  }
+}
+
