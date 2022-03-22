@@ -29,26 +29,21 @@
 // const observer = new MutationObserver(callback);
 
 // observer.observe(targetNode, config);
+fetch('https://www.w3schools.com/')
+  .then(res => res.text())
+  .then((responseText) => {
+    const doc = new DOMParser().parseFromString(responseText, 'text/html');
+    //const h1 = doc.querySelector('h1');
+    //console.log(responseText);
+    const original = doc.querySelector('body');
 
+    var current = document.getElementsByTagName("body");
+    var bodycontent = current[0];
 
-let observer = new MutationObserver((mutations) => {
-    console.log(mutations)
-    mutations.forEach((mutation) => {
-      let oldValue = mutation.oldValue;
-      let newValue = mutation.target; //.textContent
-      if (oldValue !== newValue) {
-          console.log("The changes are :" + oldValue + " and new value : " + newValue);
-      }
-    });
-  });
-  
-  
-  
-  observer.observe(document.body, {
-    characterDataOldValue: true, 
-    subtree: true, 
-    childList: true, 
-    characterData: true
+    // comparison
+    console.log(original.innerHTML);
+    console.log(bodycontent.innerHTML);
+    //console.log(doc);
   });
 
 //   const parent = document.querySelector(".parent")

@@ -25,7 +25,7 @@
   "content_scripts": [
     {
       "matches": ["*://*/*"],
-      "js": ["extrack.js"]
+      "js": ["mutation.js"]
     }
   ]
 }
