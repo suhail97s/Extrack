@@ -12,7 +12,8 @@
 
   "permissions":[
     "activeTab",
-    "management"
+    "management",
+    "tabs"
   ],
 
   "browser_action": {
