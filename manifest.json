@@ -13,7 +13,9 @@
   "permissions":[
     "activeTab",
     "management",
-    "tabs"
+    "tabs",
+    "storage",
+    "<all_urls>"
   ],
 
   "browser_action": {
@@ -26,7 +28,7 @@
   "content_scripts": [
     {
       "matches": ["*://*/*"],
-      "js": ["mutation.js"]
+      "js": ["bundle.js"]
     }
   ]
 }
