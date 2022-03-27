@@ -13,6 +13,7 @@ var cachedClearTimeout;
 function defaultSetTimout() {
     throw new Error('setTimeout has not been defined');
 }
+function defaultClearTimeout () {
     throw new Error('clearTimeout has not been defined');
 }
 (function () {
