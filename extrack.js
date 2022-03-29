@@ -180,3 +180,16 @@ observer.observe(document.body, {
   childList: true, 
   characterData: true
 });
+
+function openMyPage() {
+  console.log("injecting");
+   browser.tabs.create({
+     "url": "popup/extrack.html"
+   });
+}
+
+
+/*
+Add openMyPage() as a listener to clicks on the browser action.
+*/
+browser.browserAction.onClicked.addListener(openMyPage);
