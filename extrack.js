@@ -22,7 +22,7 @@ function analyseExtension(e) {
   //alert(management.ExtensionInfo(e.target.value))
   browser.tabs.query({currentWindow: true, active: true})
     .then((tabs) => {
-      console.log(tabs[0].url);
+      console.log("tabs:" + tabs[0].url);
   })
   if (e.target.type === "button")
   {
@@ -161,22 +161,33 @@ let backBtn = document.getElementById("backBtn");
 list.addEventListener('click', analyseExtension);
 backBtn.addEventListener('click', showExtensionList);
 
-let observer = new MutationObserver((mutations) => {
-  console.log(mutations)
-  mutations.forEach((mutation) => {
-    let oldValue = mutation.oldValue;
-    let newValue = mutation.target; //.textContent
-    if (oldValue !== newValue) {
-        console.log("The changes are :" + oldValue + " and new value : " + newValue);
-    }
+
+// let observer = new MutationObserver((mutations) => {
+//   console.log(mutations)
+//   mutations.forEach((mutation) => {
+//     let oldValue = mutation.oldValue;
+//     let newValue = mutation.target; //.textContent
+//     if (oldValue !== newValue) {
+//         console.log("The changes are :" + oldValue + " and new value : " + newValue);
+//     }
+//   });
+// });
+
+
+
+// observer.observe(document.body, {
+//   characterDataOldValue: true, 
+//   subtree: true, 
+//   childList: true, 
+//   characterData: true
+// });
+
+/* THIS OPEN EXTENSION AS A TAB*/
+function openMyPage() {
+  console.log("injecting");
+  window.focus;
+  browser.tabs.create({
+    "url": "popup/extrack.html"
   });
-});
-
-
-
-observer.observe(document.body, {
-  characterDataOldValue: true, 
-  subtree: true, 
-  childList: true, 
-  characterData: true
-});
+}
+browser.browserAction.onClicked.addListener(openMyPage);
