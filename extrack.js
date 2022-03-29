@@ -20,6 +20,10 @@ function analyseExtension(e) {
   //browser.management.setEnabled(e.target.value, true);
   // parse extension id to find more info
   //alert(management.ExtensionInfo(e.target.value))
+  browser.tabs.query({currentWindow: true, active: true})
+    .then((tabs) => {
+      console.log(tabs[0].url);
+  })
   if (e.target.type === "button")
   {
     if (list.style.display === "block")

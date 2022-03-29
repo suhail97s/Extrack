@@ -1,57 +1,51 @@
+// fetch original
+// TODO: how to get active tab URL?
+var dom =  require('./dom-compare')
 
-// const observer = new MutationObserver(function (mutations){
-//     mutations.forEach(function(mutation){
-//         if(mutation.addedNodes.length){
-
-//         }
-//     })
-// })
-
-// const targetNode = document.querySelector('ol');
-
-// const config = {
-//   attributes: true, 
-//   childList: true, 
-//   characterData: true
-// };
-  
-// const callback = mutations => {  
-//   mutations.forEach(mutation => {
-//     if (mutation.type === 'childList') {
-//       const listValues = Array.from(targetNode.children)
-//           .map(node => node.innerHTML)
-//           .filter(html => html !== '<br>');
-//       console.log(listValues);
-//     }
-//   });
-// }
-
-// const observer = new MutationObserver(callback);
-
-// observer.observe(targetNode, config);
-
-
-let observer = new MutationObserver((mutations) => {
-    console.log(mutations)
-    mutations.forEach((mutation) => {
-      let oldValue = mutation.oldValue;
-      let newValue = mutation.target; //.textContent
-      if (oldValue !== newValue) {
-          console.log("The changes are :" + oldValue + " and new value : " + newValue);
-      }
-    });
-  });
-  
-  
-  
-  observer.observe(document.body, {
-    characterDataOldValue: true, 
-    subtree: true, 
-    childList: true, 
-    characterData: true
+// TODO: Add button to call this function
+var original, expected, result, diff, groupedDiff;
+fetch('https://www.w3schools.com/')
+  .then(res => res.text())
+  .then((responseText) => {
+    const doc = new DOMParser().parseFromString(responseText, 'text/html');
+    //const h1 = doc.querySelector('h1');
+    //console.log(responseText);
+    original = doc.querySelector('body');   
+    expected = original.innerHTML;
+    // console.log(original.innerHTML);
+    analyseDOM(expected);
   });
 
-//   const parent = document.querySelector(".parent")
-//   parent.children[0].remove()
+function analyseDOM(expected){
+  // fetch current
+  var current = document.getElementsByTagName("body");
+  var bodycontent = current[0];
+  var actual = bodycontent.innerHTML;
 
-  // TO STOP MUTATION CHANGES USE observer.disconnect();
+  console.log("Result:")
+  // compare to DOM trees, get a result object
+  result = dom.compare(expected, actual);
+
+  // get comparison result
+  // console.log("Result:")
+  console.log("Results:" + result.getResult()); // false cause' trees are different
+
+  // get all differences
+  diff = result.getDifferences(); // array of diff-objects
+
+  // differences, grouped by node XPath
+  // groupedDiff = reporter.getDifferences(result); // object, key - node XPATH, value - array of differences (strings)
+
+  // string representation
+  // console.log(reporter.report(result));
+}
+
+  // console.log(bodycontent.innerHTML);
+
+  // var dom = require('dom_compare');
+
+  // var expected = original.innerHTML, // expected DOM tree
+  //     actual = bodycontent.innerHTML, // actual one
+  //     result, diff, groupedDiff;
+  // var compare = require('dom-compare').compare,
+  //     reporter = require('dom-compare').GroupingReporter;
