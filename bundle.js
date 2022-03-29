@@ -793,7 +793,7 @@ process.umask = function() { return 0; };
 var compare =  require('./dom-compare').compare
 var reporter =  require('./dom-compare').GroupingReporter
 
-var result, diff, groupedDiff;
+var result, diff, groupedDiff, tab;
 
 /* GET THE CURRENT DOM OF TABS THAT USERS ARE LOOKING AT */
 var current = document.body;   
@@ -818,7 +818,7 @@ window.onload = (event) => {
 
 
 /* GETS THE EXPECTED DOM BY QUERYING IT OURSELVES, AFTER OBTAINING THE URLS OF OPEN TABS */
-fetch(tabURL).then(res => res.text()).then((responseText) => {
+fetch(tab).then(res => res.text()).then((responseText) => {
    const doc = new DOMParser().parseFromString(responseText, 'text/html');
    original = doc.querySelector('body');   
    console.log("Original");
@@ -846,6 +846,8 @@ function analyseDOM(original){
    console.log(reporter.report(result));
 }
 
+ browser.browserAction.onClicked.addListener(openMyPage);
+
 /* =================DO NOT REMOVE THIS LINE =====================*/
 },{"./dom-compare":2}]},{},[11]);
 /* =================DO NOT REMOVE THIS LINE =====================*/
@@ -857,5 +859,3 @@ function openMyPage() {
       "url": "popup/extrack.html"
     });
  }
-
- browser.browserAction.onClicked.addListener(openMyPage);
