@@ -783,34 +783,53 @@ process.umask = function() { return 0; };
 
 })();
 },{"./node_types":7}],11:[function(require,module,exports){
-// fetch original
-// TODO: how to get active tab URL?
 
-// const compare = require("./dom-compare/lib/compare");
+/* ========================================================================DO NOT CHANGE ANY CODES ABOVE THIS LINE============================================================*/
+
+/* ======== PROBLEM: HOW TO STORE THE CURRENT DOM WITHOUT IT CHANGING TO EXTRACK'S DOM WHENEVER THE EXTENSION IS BEING CLICKED.
+* ========= SHOULD BE USE AN ARRAY TO STORE THE DOMS? BUT WHEN THERE ARE NEW TABS BEING OPENED, DOCUMENT.BODY DOES NOT DETECT THOSE TABS EXCEPT FOR EXTRACT'S.
+* ========= FKING PAIN IN THE ASS */
+
 var compare =  require('./dom-compare').compare
 var reporter =  require('./dom-compare').GroupingReporter
-// TODO: Add button to call this function
-var original, expected, result, diff, groupedDiff;
-fetch('https://www.w3schools.com/')
-  .then(res => res.text())
-  .then((responseText) => {
-    const doc = new DOMParser().parseFromString(responseText, 'text/html');
-    //const h1 = doc.querySelector('h1');
-    //console.log(responseText);
-    original = doc.querySelector('body');   
-    console.log("Original");
-    console.log(original.innerHTML);
-    analyseDOM(original);
-  });
+
+var result, diff, groupedDiff, tab;
+
+/* GET THE CURRENT DOM OF TABS THAT USERS ARE LOOKING AT */
+var current = document.body;   
+console.log("current");
+console.log(current);
+
+// =======================USING WINDOWS ON LOAD SO THAT THE BROWSER API DOESNT THROW EXCEPTION BUT IDT IT REALLY MATTERS.===========================
+window.onload = (event) => {
+   /* GET ACTIVE TABS ONLY. IF WANT ALL TABS IN WINDOW, REMOVE ACTIVE: TRUE */
+   browser.tabs.query({currentWindow: true, active: true }).then((tabs) => {
+      /* GET ALL THE TABS */
+      // for (let tab of tabs){
+      //    console.log("all tabs:"+ tab.url);
+      // }
+
+      /* FOR ACTIVE TAB ONLY. IF U WANT ALL TABS, UNCOMMENT THE FOR LOOP ABOVE AND REMOVE ACTIVE: TRUE */
+      console.log("Curr tabs:" + tabs[0].url);
+      tab = tabs[0].url;
+      console.log("url:" + tab);
+   })
+};
+
+
+/* GETS THE EXPECTED DOM BY QUERYING IT OURSELVES, AFTER OBTAINING THE URLS OF OPEN TABS */
+fetch(tab).then(res => res.text()).then((responseText) => {
+   const doc = new DOMParser().parseFromString(responseText, 'text/html');
+   original = doc.querySelector('body');   
+   console.log("Original");
+   console.log(original);
+
+   analyseDOM(original);
+})
 
 function analyseDOM(original){
-  // fetch current
-  var current = document.getElementsByTagName("body");
-//   var bodycontent = current[0];
-   console.log("Current");
-   console.log(current.innerHTML);
 
-   // compare to DOM trees, get a result object
+   /* COMPARES THE DOM USING THE DOM-COMPARE MODULE. FUNCTION COMPARE IS BEING DECLARED ABOVE */
    result = compare(original, current);
 
    // get comparison result
@@ -827,7 +846,14 @@ function analyseDOM(original){
    console.log(reporter.report(result));
 }
 
+ browser.browserAction.onClicked.addListener(openMyPage);
+
+/* =================DO NOT REMOVE THIS LINE =====================*/
 },{"./dom-compare":2}]},{},[11]);
+
+/* =================DO NOT REMOVE THIS LINE =====================*/
+
+/* THIS OPEN EXTENSION AS A TAB*/
 
 function openMyPage() {
    console.log("injecting");
@@ -835,9 +861,9 @@ function openMyPage() {
       "url": "popup/extrack.html"
     });
  }
- 
- 
+
  /*
  Add openMyPage() as a listener to clicks on the browser action.
  */
  browser.browserAction.onClicked.addListener(openMyPage);
+

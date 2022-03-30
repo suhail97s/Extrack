@@ -24,7 +24,7 @@ function analyseExtension(e) {
   /*=========================== GET CURRENT TAB URL =============================*/
   browser.tabs.query({currentWindow: true, active: true})
     .then((tabs) => {
-      console.log(tabs[0].url);
+      console.log("tabs:" + tabs[0].url);
   })
   /*=========================== END OF CURRENT TAB URL =============================*/
 
@@ -194,6 +194,7 @@ list.addEventListener('click', analyseExtension);
 backBtn.addEventListener('click', showExtensionList);
 /* ==================END OF LISTENERS ====================*/
 
+
 // let observer = new MutationObserver((mutations) => {
 //   console.log(mutations)
 //   mutations.forEach((mutation) => {
@@ -207,22 +208,20 @@ backBtn.addEventListener('click', showExtensionList);
 
 
 
-observer.observe(document.body, {
-  characterDataOldValue: true, 
-  subtree: true, 
-  childList: true, 
-  characterData: true
-});
+// observer.observe(document.body, {
+//   characterDataOldValue: true, 
+//   subtree: true, 
+//   childList: true, 
+//   characterData: true
+// });
 
-/* ===========================THIS OPEN EXTENSION AS A TAB========================*/
+/* THIS OPEN EXTENSION AS A TAB*/
 function openMyPage() {
   console.log("injecting");
-   browser.tabs.create({
-     "url": "popup/extrack.html"
-   });
+  window.focus;
+  browser.tabs.create({
+    "url": "popup/extrack.html"
+  });
 }
 
-/*
-Add openMyPage() as a listener to clicks on the browser action.
-*/
 browser.browserAction.onClicked.addListener(openMyPage);
