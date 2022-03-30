@@ -3,9 +3,25 @@ var list = document.getElementById("myList");
 var table = document.getElementById("table");
 var riskTable = document.getElementById("riskTable");
 
+
 /*=========================== PERMISSION CLASSIFICATIONS FOR FIREFOX =============================*/
-var highRiskPermission = ["browsingData", "downloads", "downloads.open", "history", "nativeMessaging",
-  "privacy", "proxy", "tabs", "webNavigation"];
+var highRiskPermission = { 
+  permissions: ["<all_urls>", "browsingData", "downloads", "downloads.open", "history", "nativeMessaging",
+  "privacy", "proxy", "tabs", "webNavigation", "*://*/*"],
+  hrpDescription:["Extension can interact with any webpage that starts with http:, https:, file:, or ftp: scheme.", // <all_urls>
+  "Enables extensions to clear browsing data.",  // browsingData
+  "Enables extensions to initiate, mointor, manipulate, and search for downloads, including running a downloaded malicious script.", // downloads
+  "Allows extensions to open the downloaded file i.e. run malicious downloaded scripts.", // downloads.open
+  "Allow extensions to full history of user with rights to read, add and delete.", // history
+  "Allows native (Win, Linux, Mac) programs that register with the web browser to communicate with extensions.", // nativeMessaging
+  "Allows extension to turn off malware protections.", // privacy
+  "Allows extension to manage web browser settings and send a user's internal traffic.", // proxy 
+  "Enalbes extensions to access current urls and favicons", // tabs 
+  "Allows extension to listen to webistes that user visits.", // webNavigation
+  "Enables extensions to interact with code running on webpage which matches any URL that uses the https: or http: scheme." // *://*/*
+  ]
+};
+
 
 var mediumRiskPermission = ["activeTab", "bookmarks", "clipboardRead", "clipboardWrite", "contextMenus", "cookies", "downloads",
   "geolocation", "identity", "management", "sessions", "storage", "topSites", "webRequest", "webRequestBlocking", "browserSettings",
@@ -15,6 +31,7 @@ var lowRiskPermission = ["alarm", "idle", "notifications", "storage", "unlimited
   "find", "identity", "dns", "tabHide", "theme"];
 
 /*==========================END OF PERMISSION CLASSIFICATIONS FOR FIREFOX ==========================*/
+
 
 function analyseExtension(e) {
   //browser.management.setEnabled(e.target.value, true);
@@ -46,10 +63,14 @@ function analyseExtension(e) {
   let extPerms = document.getElementById("extPerms");
   let riskLevel = document.getElementById("riskLevel");
   let riskPerms = document.getElementById("riskPerms");
+
   let installType = document.getElementById("installType");
   let version = document.getElementById("version");
   let homepageURL = document.getElementById("homepageURL");
+  let permsDescr = document.getElementById("permsDescr")
 /*=========================== END OF HTML ELEMENTS =============================*/
+
+
   var getting = browser.management.get(e.target.value);
 
   /*=========================== GET EXTENSION INFO AND PERMS=============================*/
@@ -76,22 +97,34 @@ function analyseExtension(e) {
         let hostPerms = info.hostPermissions[i]
         if (hostPerms.match("moz-extension://*")){continue;}
         else{
-            
-            identified_risk = "High";
-            riskLevel.innerHTML = "High";
-            hostPermsCount++;
+          identified_risk = "High";
+          riskLevel.innerHTML = "High";
+          hostPermsCount++;
           if (hostPerms.match("<all_urls>"))
           {
             extPerms.innerHTML += "all_urls" + "<br>";
             riskPerms.innerHTML += "all_urls" + "<br>";
+            hostPermsCount++;
           }
           else{
             extPerms.innerHTML += hostPerms + "<br>";
             riskPerms.innerHTML += hostPerms + "<br>";
           }
+           
+          for (let p = 0; p < highRiskPermission.permissions.length; p++) 
+          {
+            if (hostPerms == highRiskPermission.permissions[p]){
+              permsDescr.innerHTML += highRiskPermission.hrpDescription[p] + "<br>";
+            }
+            else {
+              permsDescr.innerHTML == "";
+            }
+          }
         }
+                  
       }
     }
+  
     if (info.permissions.length != 0)
     {
       for (let i = 0; i < info.permissions.length; i++)
@@ -134,12 +167,14 @@ function analyseExtension(e) {
         }
       }
     }
+
     /* NO RISKS IDENTIFIED */
-    if (identified_risk=="" && hostPermsCount == 0 )
+    if (identified_risk=="" && hostPermsCount == 0)
     {
       extPerms.innerHTML = "No Permissions";
       riskLevel.innerHTML = "No Risks";
       riskPerms.innerHTML = "No Permissions";
+      permsDescr.innerHTML == "";
     }
 
     // console.log(info.permissions);
@@ -189,7 +224,7 @@ browser.management.getAll().then((extensions) => {
 /*=========================== END OF DISABLE EXTENSIONS=====================================*/
 /* =====================LISTENERS =======================*/
 let backBtn = document.getElementById("backBtn");
-//change to onclick
+//change to onclicks
 list.addEventListener('click', analyseExtension);
 backBtn.addEventListener('click', showExtensionList);
 /* ==================END OF LISTENERS ====================*/
@@ -207,12 +242,14 @@ backBtn.addEventListener('click', showExtensionList);
 
 
 
+
 observer.observe(document.body, {
   characterDataOldValue: true, 
   subtree: true, 
   childList: true, 
   characterData: true
 });
+
 
 /* ===========================THIS OPEN EXTENSION AS A TAB========================*/
 function openMyPage() {
@@ -226,3 +263,4 @@ function openMyPage() {
 Add openMyPage() as a listener to clicks on the browser action.
 */
 browser.browserAction.onClicked.addListener(openMyPage);
+
