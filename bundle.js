@@ -850,12 +850,20 @@ function analyseDOM(original){
 
 /* =================DO NOT REMOVE THIS LINE =====================*/
 },{"./dom-compare":2}]},{},[11]);
+
 /* =================DO NOT REMOVE THIS LINE =====================*/
 
 /* THIS OPEN EXTENSION AS A TAB*/
+
 function openMyPage() {
    console.log("injecting");
     browser.tabs.create({
       "url": "popup/extrack.html"
     });
  }
+
+ /*
+ Add openMyPage() as a listener to clicks on the browser action.
+ */
+ browser.browserAction.onClicked.addListener(openMyPage);
+
