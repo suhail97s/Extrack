@@ -5,7 +5,7 @@ var riskTable = document.getElementById("riskTable");
 
 
 /*=========================== PERMISSION CLASSIFICATIONS FOR FIREFOX =============================*/
-var highRiskPermission = ["browsingData", "downloads", "downloads.open", "history", "nativeMessaging",
+var highRiskPermission = ["", "browsingData", "downloads", "downloads.open", "history", "nativeMessaging",
   "privacy", "proxy", "tabs", "webNavigation"];
 
 var mediumRiskPermission = ["activeTab", "bookmarks", "clipboardRead", "clipboardWrite", "contextMenus", "cookies", "downloads",
@@ -15,7 +15,7 @@ var mediumRiskPermission = ["activeTab", "bookmarks", "clipboardRead", "clipboar
 var lowRiskPermission = ["alarm", "idle", "notifications", "storage", "unlimitedStorage", "pkcs11", "captivePortal","contextIdentities",
   "find", "identity", "dns", "tabHide", "theme"];
 
-var hrpDescription = [
+var hrpDescription = ["",
   "Enables extensions to clear browsing data.",  // browsingData
   "Enables extensions to initiate, mointor, manipulate, and search for downloads, including running a downloaded malicious script.", // downloads
   "Allows extensions to open the downloaded file i.e. run malicious downloaded scripts.", // downloads.open
@@ -105,12 +105,12 @@ function analyseExtension(e) {
           {
             extPerms.innerHTML += "all_urls" + "<br>";
             riskPerms.innerHTML += "all_urls" + "<br>";
-            permsDescr.innerHTML = "Extension can interact with any webpage that starts with http:, https:, file:, or ftp: scheme." + "<br>";
+            permsDescr.innerHTML += "Extension can interact with any webpage that starts with http:, https:, file:, or ftp: scheme." + "<br>";
           }
           if (hostPerms == '*://*/*') {
             extPerms.innerHTML += "*://*/*" + "<br>";
             riskPerms.innerHTML += "*://*/*" + "<br>";
-            permsDescr.innerHTML = "Enables extensions to interact with code running on webpage which matches any URL that uses the https: or http: scheme." + "<br>"; 
+            permsDescr.innerHTML += "Enables extensions to interact with code running on webpage which matches any URL that uses the https: or http: scheme." + "<br>"; 
           } 
           else{
             extPerms.innerHTML += hostPerms;
@@ -137,7 +137,9 @@ function analyseExtension(e) {
             identified_risk = "High";
             riskLevel.innerHTML = "High"
             riskPerms.innerHTML += curr_perms + "<br>";
+            console.log(curr_perms);
             if (p = highRiskPermission.indexOf(curr_perms)) {
+              console.log(p);
               permsDescr.innerHTML += hrpDescription[p] + "<br>";
             }
           }
