@@ -6,7 +6,19 @@ var riskTable = document.getElementById("riskTable");
 
 var highRiskPermission = { 
   permissions: ["<all_urls>", "browsingData", "downloads", "downloads.open", "history", "nativeMessaging",
-  "privacy", "proxy", "tabs", "webNavigation"] 
+  "privacy", "proxy", "tabs", "webNavigation", "*://*/*"],
+  hrpDescription:["Extension can interact with any webpage that starts with http:, https:, file:, or ftp: scheme.", // <all_urls>
+  "Enables extensions to clear browsing data.",  // browsingData
+  "Enables extensions to initiate, mointor, manipulate, and search for downloads, including running a downloaded malicious script.", // downloads
+  "Allows extensions to open the downloaded file i.e. run malicious downloaded scripts.", // downloads.open
+  "Allow extensions to full history of user with rights to read, add and delete.", // history
+  "Allows native (Win, Linux, Mac) programs that register with the web browser to communicate with extensions.", // nativeMessaging
+  "Allows extension to turn off malware protections.", // privacy
+  "Allows extension to manage web browser settings and send a user's internal traffic.", // proxy 
+  "Enalbes extensions to access current urls and favicons", // tabs 
+  "Allows extension to listen to webistes that user visits.", // webNavigation
+  "Enables extensions to interact with code running on webpage which matches any URL that uses the https: or http: scheme." // *://*/*
+  ]
 };
 
 var mediumRiskPermission = ["activeTab", "bookmarks", "clipboardRead", "clipboardWrite", "contextMenus", "cookies", "downloads",
@@ -36,6 +48,7 @@ function analyseExtension(e) {
   let extPerms = document.getElementById("extPerms");
   let riskLevel = document.getElementById("riskLevel");
   let riskPerms = document.getElementById("riskPerms");
+  let permsDescr = document.getElementById("permsDescr")
 
   var getting = browser.management.get(e.target.value);
 
@@ -57,22 +70,34 @@ function analyseExtension(e) {
         let hostPerms = info.hostPermissions[i]
         if (hostPerms.match("moz-extension://*")){continue;}
         else{
-            
-            identified_risk = "High";
-            riskLevel.innerHTML = "High";
-            hostPermsCount++;
+          identified_risk = "High";
+          riskLevel.innerHTML = "High";
+          hostPermsCount++;
           if (hostPerms.match("<all_urls>"))
           {
             extPerms.innerHTML += "all_urls" + "<br>";
             riskPerms.innerHTML += "all_urls" + "<br>";
+            hostPermsCount++;
           }
           else{
             extPerms.innerHTML += hostPerms + "<br>";
             riskPerms.innerHTML += hostPerms + "<br>";
           }
+           
+          for (let p = 0; p < highRiskPermission.permissions.length; p++) 
+          {
+            if (hostPerms == highRiskPermission.permissions[p]){
+              permsDescr.innerHTML += highRiskPermission.hrpDescription[p] + "<br>";
+            }
+            else {
+              permsDescr.innerHTML == "";
+            }
+          }
         }
+                  
       }
     }
+  
     if (info.permissions.length != 0)
     {
       for (let i = 0; i < info.permissions.length; i++)
@@ -104,11 +129,12 @@ function analyseExtension(e) {
         }
       }
     }
-    if (identified_risk=="" && hostPermsCount == 0 )
+    if (identified_risk=="" && hostPermsCount == 0)
     {
       extPerms.innerHTML = "No Permissions";
       riskLevel.innerHTML = "No Risks";
       riskPerms.innerHTML = "No Permissions";
+      permsDescr.innerHTML == "";
     }
 
     // console.log(info.permissions);
@@ -178,59 +204,4 @@ observer.observe(document.body, {
   childList: true, 
   characterData: true
 });
-
-//to enable all extensions
-var extCheckbox = document.getElementById("extCheckbox");
-// var extCheckbox = document.querySelector("input[id='extCheckbox']")
-
-
-
-function checkboxTrue() {
-  
-  browser.management.getAll().then((extensions) => {
-    for (let extension of extensions) {
-      if (extension.type !== 'extension') {
-        continue;
-      }
-      if (extension.enabled) {
-        browser.management.setEnabled(extension.id, false)
-      }
-    }
-  });
-}
-
-function checkboxFalse() {
-  
-  browser.management.getAll().then((extensions) => {
-    for (let extension of extensions) {
-      if (extension.type !== 'extension') {
-        continue;
-      }
-      if (!extension.enabled) {
-        browser.management.setEnabled(extension.id, true)
-      }
-    }
-  });
-}
-
-// extCheckbox.addEventListener("onchange", () => {
-//   if (extCheckbox.checked == true) {
-//     checkboxTrue();
-//     console.log("All extensions have been disabled.");
-//   } else {
-//     checkboxFalse();
-//     console.log("All extensions have been enabled.");
-//   }
-// });
-
-
-function changeCheckbox() {
-  if (extCheckbox.checked == true) {
-    checkboxTrue();
-    console.log("All extensions have been disabled.");
-  } else {
-    checkboxFalse();
-    console.log("All extensions have been enabled.");
-  }
-}
 
