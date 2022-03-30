@@ -1,0 +1,53 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Launch exetrack.html",
+            "type": "firefox",
+            "request": "launch",
+            "reAttach": true,
+            "file": "${workspaceFolder}/extrack.html",
+            "pathMappings": [
+                {
+                    "url": "moz-extension://69497cd1-bcc1-4595-97c4-2c032d60e764",
+                    "path": "${workspaceFolder}"
+                },
+                {
+                    "url": "moz-extension://69497cd1-bcc1-4595-97c4-2c032d60e764",
+                    "path": "${workspaceFolder}"
+                },
+                {
+                    "url": "moz-extension://69497cd1-bcc1-4595-97c4-2c032d60e764",
+                    "path": "${workspaceFolder}"
+                },
+                {
+                    "url": "moz-extension://69497cd1-bcc1-4595-97c4-2c032d60e764",
+                    "path": "${workspaceFolder}"
+                }
+            ]
+        },
+        {
+            "name": "Launch localhost",
+            "type": "firefox",
+            "request": "launch",
+            "reAttach": true,
+            "url": "http://localhost/extrack.html",
+            "webRoot": "${workspaceFolder}"
+        },
+        {
+            "name": "Attach",
+            "type": "firefox",
+            "request": "attach"
+        },
+        {
+            "name": "Launch WebExtension",
+            "type": "firefox",
+            "request": "launch",
+            "reAttach": true,
+            "addonPath": "${workspaceFolder}"
+        }
+    ]
+}
