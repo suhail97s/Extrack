@@ -9,10 +9,10 @@ var highRiskPermission = ["browsingData", "downloads", "downloads.open", "histor
 
 var mediumRiskPermission = ["activeTab", "bookmarks", "clipboardRead", "clipboardWrite", "contextMenus", "cookies", "downloads",
   "geolocation", "identity", "management", "sessions", "storage", "topSites", "webRequest", "webRequestBlocking", "browserSettings",
-  "search", "menu"];
+  "search", "menus"];
 
-var lowRiskPermission = ["alarm", "idle", "notifications", "storage", "unlimitedStorage", "pkcs11", "captivePortal","contextIdentities",
-  "find", "identity", "dns", "tabHide", "theme"];
+var lowRiskPermission = ["alarm", "idle", "notifications", "storage", "unlimitedStorage", 
+"pkcs11", "captivePortal","contextualIdentities", "find", "identity", "dns", "tabHide", "theme"];
 
 /*==========================END OF PERMISSION CLASSIFICATIONS FOR FIREFOX ==========================*/
 
@@ -24,7 +24,7 @@ function analyseExtension(e) {
   /*=========================== GET CURRENT TAB URL =============================*/
   browser.tabs.query({currentWindow: true, active: true})
     .then((tabs) => {
-      console.log(tabs[0].url);
+      console.log("tabs:" + tabs[0].url);
   })
   /*=========================== END OF CURRENT TAB URL =============================*/
 
@@ -141,15 +141,6 @@ function analyseExtension(e) {
       riskLevel.innerHTML = "No Risks";
       riskPerms.innerHTML = "No Permissions";
     }
-
-    // console.log(info.permissions);
-    // info.installType
-    // "admin": the add-on was installed because of an administrative policy.
-    // "development": the add-on was installed unpacked from disk.
-    // "normal": the add-on was installed normally from an install package.
-    // "sideload": the add-on was installed by some other software on the user's computer.
-    // "other": the add-on was installed in some other way.
-
   });  
 }
 /*===========================END OF EXTENSION INFO AND PERMS=============================*/
@@ -169,24 +160,6 @@ function showExtensionList(e)
   }
 }
 /*============================= END OF SHOW EXTENSION LIST================================*/
-/*=========================== DISABLE EXTENSIONS===========================================*/
-browser.management.getAll().then((extensions) => {
-  for (let extension of extensions) {
-    if (extension.type !== 'extension') {
-      continue;
-    }
-    if (extension.enabled) {
-      let divListItem = document.createElement("button")
-      divListItem.type = "button"
-      divListItem.className = "text-dark list-group-item list-group-item-action list-group-item-light"
-      divListItem.id = extension.name
-      divListItem.value = extension.id
-      divListItem.innerText = extension.name;
-      list.appendChild(divListItem);
-    }
-  }
-});
-/*=========================== END OF DISABLE EXTENSIONS=====================================*/
 /* =====================LISTENERS =======================*/
 let backBtn = document.getElementById("backBtn");
 //change to onclick
@@ -194,36 +167,13 @@ list.addEventListener('click', analyseExtension);
 backBtn.addEventListener('click', showExtensionList);
 /* ==================END OF LISTENERS ====================*/
 
-// let observer = new MutationObserver((mutations) => {
-//   console.log(mutations)
-//   mutations.forEach((mutation) => {
-//     let oldValue = mutation.oldValue;
-//     let newValue = mutation.target; //.textContent
-//     if (oldValue !== newValue) {
-//         console.log("The changes are :" + oldValue + " and new value : " + newValue);
-//     }
-//   });
-// });
-
-
-
-observer.observe(document.body, {
-  characterDataOldValue: true, 
-  subtree: true, 
-  childList: true, 
-  characterData: true
-});
 
 /* ===========================THIS OPEN EXTENSION AS A TAB========================*/
 function openMyPage() {
   console.log("injecting");
-   browser.tabs.create({
-     "url": "popup/extrack.html"
-   });
+  window.focus;
+  browser.tabs.create({
+    "url": "popup/extrack.html"
+  });
 }
-
-
-/*
-Add openMyPage() as a listener to clicks on the browser action.
-*/
 browser.browserAction.onClicked.addListener(openMyPage);
