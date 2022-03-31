@@ -9,5 +9,5 @@
 html, body {
   max-height: 90vh;
   overflow-y: auto;
-  scrollbar-width: none;
+  /* scrollbar-width: none; */
 }

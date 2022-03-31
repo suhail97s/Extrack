@@ -28,7 +28,7 @@
     "scripts": ["bundle.js","extrack.js"],
     "persistent": true
   },
-
+  
   "content_scripts": [
     {
       "matches": ["*://*/*"],
