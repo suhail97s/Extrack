@@ -51,7 +51,6 @@ function analyseExtension(e) {
   let homepageURL = document.getElementById("homepageURL");
 /*=========================== END OF HTML ELEMENTS =============================*/
   var getting = browser.management.get(e.target.value);
-
   /*=========================== GET EXTENSION INFO AND PERMS=============================*/
   getting.then(info =>{
     let identified_risk = "";
@@ -142,7 +141,6 @@ function analyseExtension(e) {
       riskPerms.innerHTML = "No Permissions";
     }
 
-    // console.log(info.permissions);
     // info.installType
     // "admin": the add-on was installed because of an administrative policy.
     // "development": the add-on was installed unpacked from disk.
@@ -169,7 +167,7 @@ function showExtensionList(e)
   }
 }
 /*============================= END OF SHOW EXTENSION LIST================================*/
-/*=========================== DISABLE EXTENSIONS===========================================*/
+/*=========================== ALL EXTENSIONS===========================================*/
 browser.management.getAll().then((extensions) => {
   for (let extension of extensions) {
     if (extension.type !== 'extension') {
@@ -186,7 +184,7 @@ browser.management.getAll().then((extensions) => {
     }
   }
 });
-/*=========================== END OF DISABLE EXTENSIONS=====================================*/
+/*=========================== END OF ALL EXTENSIONS=====================================*/
 /* =====================LISTENERS =======================*/
 let backBtn = document.getElementById("backBtn");
 //change to onclick
@@ -216,12 +214,12 @@ backBtn.addEventListener('click', showExtensionList);
 // });
 
 /* THIS OPEN EXTENSION AS A TAB*/
-function openMyPage() {
-  console.log("injecting");
-  window.focus;
-  browser.tabs.create({
-    "url": "popup/extrack.html"
-  });
-}
+// function openMyPage() {
+//   console.log("injecting");
+//   window.focus;
+//   browser.tabs.create({
+//     "url": "popup/extrack.html"
+//   });
+// }
 
-browser.browserAction.onClicked.addListener(openMyPage);
+// browser.browserAction.onClicked.addListener(openMyPage);

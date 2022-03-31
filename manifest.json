@@ -28,16 +28,11 @@
     "scripts": ["bundle.js","extrack.js"],
     "persistent": true
   },
-
-  "background":{
-    "scripts": ["bundle.js","extrack.js"],
-    "persistent": true
-  },
   
   "content_scripts": [
     {
       "matches": ["*://*/*"],
-      "js": ["extrack.js"]
+      "js": ["bundle.js"]
     }
   ]
 }

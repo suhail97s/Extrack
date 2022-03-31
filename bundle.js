@@ -789,19 +789,18 @@ process.umask = function() { return 0; };
 /* ======== PROBLEM: HOW TO STORE THE CURRENT DOM WITHOUT IT CHANGING TO EXTRACK'S DOM WHENEVER THE EXTENSION IS BEING CLICKED.
 * ========= SHOULD BE USE AN ARRAY TO STORE THE DOMS? BUT WHEN THERE ARE NEW TABS BEING OPENED, DOCUMENT.BODY DOES NOT DETECT THOSE TABS EXCEPT FOR EXTRACT'S.
 * ========= FKING PAIN IN THE ASS */
-
 var compare =  require('./dom-compare').compare
 var reporter =  require('./dom-compare').GroupingReporter
 
-var result, diff, groupedDiff, tab;
+var result, diff, groupedDiff, tab, current;
+function domCompare(){
+   /* GET THE CURRENT DOM OF TABS THAT USERS ARE LOOKING AT */
+   current = document.body;   
+   console.log("current");
+   console.log(current.innerHTML);
+   
+   // =======================USING WINDOWS ON LOAD SO THAT THE BROWSER API DOESNT THROW EXCEPTION BUT IDT IT REALLY MATTERS.===========================
 
-/* GET THE CURRENT DOM OF TABS THAT USERS ARE LOOKING AT */
-var current = document.body;   
-console.log("current");
-console.log(current);
-
-// =======================USING WINDOWS ON LOAD SO THAT THE BROWSER API DOESNT THROW EXCEPTION BUT IDT IT REALLY MATTERS.===========================
-window.onload = (event) => {
    /* GET ACTIVE TABS ONLY. IF WANT ALL TABS IN WINDOW, REMOVE ACTIVE: TRUE */
    browser.tabs.query({currentWindow: true, active: true }).then((tabs) => {
       /* GET ALL THE TABS */
@@ -814,18 +813,19 @@ window.onload = (event) => {
       tab = tabs[0].url;
       console.log("url:" + tab);
    })
+   
+   
+   /* GETS THE EXPECTED DOM BY QUERYING IT OURSELVES, AFTER OBTAINING THE URLS OF OPEN TABS */
+   fetch(tab).then(res => res.text()).then((responseText) => {
+      const doc = new DOMParser().parseFromString(responseText, 'text/html');
+      original = doc.querySelector('body');   
+      console.log("Original");
+      console.log(original);
+   
+      analyseDOM(original);
+   })
 };
 
-
-/* GETS THE EXPECTED DOM BY QUERYING IT OURSELVES, AFTER OBTAINING THE URLS OF OPEN TABS */
-fetch(tab).then(res => res.text()).then((responseText) => {
-   const doc = new DOMParser().parseFromString(responseText, 'text/html');
-   original = doc.querySelector('body');   
-   console.log("Original");
-   console.log(original);
-
-   analyseDOM(original);
-})
 
 function analyseDOM(original){
 
@@ -846,7 +846,8 @@ function analyseDOM(original){
    console.log(reporter.report(result));
 }
 
- browser.browserAction.onClicked.addListener(openMyPage);
+// setInterval(domCompare, 3000);
+// setInterval('console.log("Running interval 3000")', 3000);
 
 /* =================DO NOT REMOVE THIS LINE =====================*/
 },{"./dom-compare":2}]},{},[11]);
@@ -854,7 +855,7 @@ function analyseDOM(original){
 /* =================DO NOT REMOVE THIS LINE =====================*/
 
 /* THIS OPEN EXTENSION AS A TAB*/
-
+browser.browserAction.onClicked.addListener(openMyPage);
 function openMyPage() {
    console.log("injecting");
     browser.tabs.create({
