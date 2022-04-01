@@ -21,18 +21,19 @@
   "browser_action": {
     "default_icon": "icons/analyse-48.png",
     "default_title": "Extrack",
+    "default_popup": "popup/extrack.html",
     "browser_style": true
   },
+  
 
   "background":{
-    "scripts": ["bundle.js","extrack.js"],
-    "persistent": true
+    "scripts": ["bundle.js"]
   },
   
   "content_scripts": [
     {
-      "matches": ["*://*/*"],
-      "js": ["bundle.js"]
+      "matches": ["<all_urls>"],
+      "js": ["content-script.js"]
     }
   ]
 }
