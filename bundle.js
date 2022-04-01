@@ -797,6 +797,9 @@ var reporter =  require('./dom-compare').GroupingReporter
 
 var result, current, original;
 
+const linkArray = [];
+const resultsArray = [];
+
 /* =======================================GETTING THE EXPECTED DOM=======================================*/
 function expectedDOM(){
   
@@ -812,7 +815,6 @@ function expectedDOM(){
          let temp = doc.querySelector('body').innerHTML;   
          original = new DOMParser().parseFromString(temp, 'text/html');
          console.log("original" + original);
-
       })
    })
    
@@ -838,6 +840,7 @@ function getTabsSendmessage()
       {
          //console.log(tab.url.startsWith("about"));
       /* THE MESSAGE WE SENDING TO TAB, IN THIS FORMAT (TAB.ID, MESSAGE) */
+
          browser.tabs.sendMessage(
             tab.id,
             {greeting: "Hi from bundle.js"}
@@ -852,11 +855,29 @@ function getTabsSendmessage()
             expectedDOM();
             // compare the two DOM
             analyseDOM();
+            sendVarToDOM();
             });
          }
    })   
 }
 /* ==================================END===================================== */
+
+function sendVarToDOM()
+{
+   getActiveTab().then((tabs) => {
+      let tab = tabs[0]
+      linkArray.push(tab.url);
+      browser.tabs.sendMessage(
+         tab.id,
+         {"linkArray":linkArray, "resultsArray":resultsArray}
+      ).then(response => {
+         console.log("after DOM messaged sent from content-script");
+      });
+   })
+}
+
+
+
 /* =========CHECKS IF DOCUMENT IS READY BUT HONESTLY MCM NO DIFF LMAO USELESS============ */
 function sendMessageToTabs() {
    if(document.readyState === 'ready' || document.readyState === 'complete') 
@@ -892,6 +913,7 @@ function analyseDOM(){
 
    // string representation
    console.log(reporter.report(result));
+   resultsArray.push(reporter.report(result));
 }
 /* ==================================END===================================== */
 
