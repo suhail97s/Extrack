@@ -41,7 +41,7 @@ function analyseExtension(e) {
   /*=========================== GET CURRENT TAB URL =============================*/
   browser.tabs.query({currentWindow: true, active: true})
     .then((tabs) => {
-      console.log(tabs[0].url);
+      console.log("tabs:" + tabs[0].url);
   })
   /*=========================== END OF CURRENT TAB URL =============================*/
 
@@ -72,7 +72,6 @@ function analyseExtension(e) {
 
 
   var getting = browser.management.get(e.target.value);
-
   /*=========================== GET EXTENSION INFO AND PERMS=============================*/
   getting.then(info =>{
     let identified_risk = "";
@@ -183,7 +182,6 @@ function analyseExtension(e) {
       permsDescr.innerHTML = "" + "<br>";
     }
 
-    // console.log(info.permissions);
     // info.installType
     // "admin": the add-on was installed because of an administrative policy.
     // "development": the add-on was installed unpacked from disk.
@@ -211,7 +209,7 @@ function showExtensionList(e)
   }
 }
 /*============================= END OF SHOW EXTENSION LIST================================*/
-/*=========================== DISABLE EXTENSIONS===========================================*/
+/*=========================== ALL EXTENSIONS===========================================*/
 browser.management.getAll().then((extensions) => {
   for (let extension of extensions) {
     if (extension.type !== 'extension') {
@@ -228,13 +226,14 @@ browser.management.getAll().then((extensions) => {
     }
   }
 });
-/*=========================== END OF DISABLE EXTENSIONS=====================================*/
+/*=========================== END OF ALL EXTENSIONS=====================================*/
 /* =====================LISTENERS =======================*/
 let backBtn = document.getElementById("backBtn");
 //change to onclicks
 list.addEventListener('click', analyseExtension);
 backBtn.addEventListener('click', showExtensionList);
 /* ==================END OF LISTENERS ====================*/
+
 
 // let observer = new MutationObserver((mutations) => {
 //   console.log(mutations)
@@ -249,7 +248,6 @@ backBtn.addEventListener('click', showExtensionList);
 
 
 
-
 // observer.observe(document.body, {
 //   characterDataOldValue: true, 
 //   subtree: true, 
@@ -258,16 +256,14 @@ backBtn.addEventListener('click', showExtensionList);
 // });
 
 
-/* ===========================THIS OPEN EXTENSION AS A TAB========================*/
-function openMyPage() {
-  console.log("injecting");
-   browser.tabs.create({
-     "url": "popup/extrack.html"
-   });
-}
+/* THIS OPEN EXTENSION AS A TAB*/
+// function openMyPage() {
+//   console.log("injecting");
+//   window.focus;
+//   browser.tabs.create({
+//     "url": "popup/extrack.html"
+//   });
+// }
 
-/*
-Add openMyPage() as a listener to clicks on the browser action.
-*/
+
 browser.browserAction.onClicked.addListener(openMyPage);
-

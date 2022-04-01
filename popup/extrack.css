@@ -9,12 +9,6 @@
 html, body {
   max-height: 90vh;
   overflow-y: auto;
-  scrollbar-width: none;
+  /* scrollbar-width: none; */
 }
 
-img {
-  width: 50px;
-  padding-left: 15px;
-  padding-right: 3px;
-  padding-bottom: 5px;
-}
