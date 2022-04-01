@@ -3,8 +3,9 @@ var list = document.getElementById("myList");
 var table = document.getElementById("table");
 var riskTable = document.getElementById("riskTable");
 
+
 /*=========================== PERMISSION CLASSIFICATIONS FOR FIREFOX =============================*/
-var highRiskPermission = ["browsingData", "downloads", "downloads.open", "history", "nativeMessaging",
+var highRiskPermission = ["", "browsingData", "downloads", "downloads.open", "history", "nativeMessaging",
   "privacy", "proxy", "tabs", "webNavigation"];
 
 var mediumRiskPermission = ["activeTab", "bookmarks", "clipboardRead", "clipboardWrite", "contextMenus", "cookies", "downloads",
@@ -14,7 +15,23 @@ var mediumRiskPermission = ["activeTab", "bookmarks", "clipboardRead", "clipboar
 var lowRiskPermission = ["alarm", "idle", "notifications", "storage", "unlimitedStorage", "pkcs11", "captivePortal","contextIdentities",
   "find", "identity", "dns", "tabHide", "theme"];
 
+var hrpDescription = ["",
+  "Enables extensions to clear browsing data.",  // browsingData
+  "Enables extensions to initiate, mointor, manipulate, and search for downloads, including running a downloaded malicious script.", // downloads
+  "Allows extensions to open the downloaded file i.e. run malicious downloaded scripts.", // downloads.open
+  "Allow extensions to full history of user with rights to read, add and delete.", // history
+  "Allows native (Win, Linux, Mac) programs that register with the web browser to communicate with extensions.", // nativeMessaging
+  "Allows extension to turn off malware protections.", // privacy
+  "Allows extension to manage web browser settings and send a user's internal traffic.", // proxy 
+  "Enalbes extensions to access current urls and favicons.", // tabs 
+  "Allows extension to listen to webistes that user visits." // webNavigation
+  // "Enables extensions to interact with code running on webpage which matches any URL that uses the https: or http: scheme." // *://*/*
+];
+
+
+
 /*==========================END OF PERMISSION CLASSIFICATIONS FOR FIREFOX ==========================*/
+
 
 function analyseExtension(e) {
   //browser.management.setEnabled(e.target.value, true);
@@ -46,10 +63,14 @@ function analyseExtension(e) {
   let extPerms = document.getElementById("extPerms");
   let riskLevel = document.getElementById("riskLevel");
   let riskPerms = document.getElementById("riskPerms");
+
   let installType = document.getElementById("installType");
   let version = document.getElementById("version");
   let homepageURL = document.getElementById("homepageURL");
+  let permsDescr = document.getElementById("permsDescr")
 /*=========================== END OF HTML ELEMENTS =============================*/
+
+
   var getting = browser.management.get(e.target.value);
   /*=========================== GET EXTENSION INFO AND PERMS=============================*/
   getting.then(info =>{
@@ -60,6 +81,7 @@ function analyseExtension(e) {
     extPerms.innerHTML = "";
     riskPerms.innerHTML = "";
     riskLevel.innerHTML = "";
+    permsDescr.innerHTML = "";
 
     /* EXTENSION INFORMATION */
     extName.innerHTML = info.name;
@@ -75,22 +97,28 @@ function analyseExtension(e) {
         let hostPerms = info.hostPermissions[i]
         if (hostPerms.match("moz-extension://*")){continue;}
         else{
-            
-            identified_risk = "High";
-            riskLevel.innerHTML = "High";
-            hostPermsCount++;
+          identified_risk = "High";
+          riskLevel.innerHTML = "High";
+          hostPermsCount++;
           if (hostPerms.match("<all_urls>"))
           {
             extPerms.innerHTML += "all_urls" + "<br>";
             riskPerms.innerHTML += "all_urls" + "<br>";
+            permsDescr.innerHTML += "Extension can interact with any webpage that starts with http:, https:, file:, or ftp: scheme." + "<br>";
           }
+          if (hostPerms == '*://*/*') {
+            extPerms.innerHTML += "*://*/*" + "<br>";
+            riskPerms.innerHTML += "*://*/*" + "<br>";
+            permsDescr.innerHTML += "Enables extensions to interact with code running on webpage which matches any URL that uses the https: or http: scheme." + "<br>"; 
+          } 
           else{
-            extPerms.innerHTML += hostPerms + "<br>";
-            riskPerms.innerHTML += hostPerms + "<br>";
+            extPerms.innerHTML += hostPerms;
+            riskPerms.innerHTML += hostPerms;
           }
-        }
+        }    
       }
     }
+  
     if (info.permissions.length != 0)
     {
       for (let i = 0; i < info.permissions.length; i++)
@@ -108,8 +136,14 @@ function analyseExtension(e) {
             identified_risk = "High";
             riskLevel.innerHTML = "High"
             riskPerms.innerHTML += curr_perms + "<br>";
+            console.log(curr_perms);
+            if (p = highRiskPermission.indexOf(curr_perms)) {
+              console.log(p);
+              permsDescr.innerHTML += hrpDescription[p] + "<br>";
+            }
           }
         }
+ 
         /* HIGH RISK NOT IDENTIFIED YET, MOVE ON TO CHECK FOR MEDIUM */
         if (identified_risk != "High")
         {
@@ -119,26 +153,33 @@ function analyseExtension(e) {
             identified_risk = "Medium";
             riskLevel.innerHTML = "Medium";
             riskPerms.innerHTML += curr_perms + "<br>";
+            permsDescr.innerHTML = "" + "<br>";
           }
         }
-        /* HIGH RISK AND MEDIUM NOT IDENTIFIED YET, MOVE ON TO CHECK FOR LOW */
-        if (identified_risk != "Medium" && identified_risk != "High"){
+      /* HIGH RISK AND MEDIUM NOT IDENTIFIED YET, MOVE ON TO CHECK FOR LOW */
+        if (identified_risk != "Medium" && identified_risk != "High")
+        {
           // find current perms in low risk list
           if (lowRiskPermission.indexOf(curr_perms) > -1){
             //get the perms and show in table
             identified_risk = "Low";
             riskLevel.innerHTML = "Low";
             riskPerms.innerHTML += curr_perms + "<br>";
+            permsDescr.innerHTML = "" + "<br>";
           }
         }
+      
       }
     }
+ 
+
     /* NO RISKS IDENTIFIED */
-    if (identified_risk=="" && hostPermsCount == 0 )
+    if (identified_risk=="" && hostPermsCount == 0)
     {
       extPerms.innerHTML = "No Permissions";
       riskLevel.innerHTML = "No Risks";
       riskPerms.innerHTML = "No Permissions";
+      permsDescr.innerHTML = "" + "<br>";
     }
 
     // info.installType
@@ -150,6 +191,7 @@ function analyseExtension(e) {
 
   });  
 }
+
 /*===========================END OF EXTENSION INFO AND PERMS=============================*/
 
 /*============================= SHOW EXTENSION LIST ====================================*/
@@ -187,7 +229,7 @@ browser.management.getAll().then((extensions) => {
 /*=========================== END OF ALL EXTENSIONS=====================================*/
 /* =====================LISTENERS =======================*/
 let backBtn = document.getElementById("backBtn");
-//change to onclick
+//change to onclicks
 list.addEventListener('click', analyseExtension);
 backBtn.addEventListener('click', showExtensionList);
 /* ==================END OF LISTENERS ====================*/
@@ -213,6 +255,7 @@ backBtn.addEventListener('click', showExtensionList);
 //   characterData: true
 // });
 
+
 /* THIS OPEN EXTENSION AS A TAB*/
 // function openMyPage() {
 //   console.log("injecting");
@@ -222,4 +265,5 @@ backBtn.addEventListener('click', showExtensionList);
 //   });
 // }
 
-// browser.browserAction.onClicked.addListener(openMyPage);
+
+browser.browserAction.onClicked.addListener(openMyPage);
