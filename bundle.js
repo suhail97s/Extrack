@@ -786,55 +786,98 @@ process.umask = function() { return 0; };
 
 /* ========================================================================DO NOT CHANGE ANY CODES ABOVE THIS LINE============================================================*/
 
-/* ======== PROBLEM: HOW TO STORE THE CURRENT DOM WITHOUT IT CHANGING TO EXTRACK'S DOM WHENEVER THE EXTENSION IS BEING CLICKED.
-* ========= SHOULD BE USE AN ARRAY TO STORE THE DOMS? BUT WHEN THERE ARE NEW TABS BEING OPENED, DOCUMENT.BODY DOES NOT DETECT THOSE TABS EXCEPT FOR EXTRACT'S.
+/* ======== PROBLEM: ONLY WORK IF AT THE TIME U OPEN THE BROWSER, THERE ARE 
+===========         ALREADY TABS OPENED (OR WHEN U ADDON THE EXTENSION, THE TAB IS ALREADY OPEN)
+=========== TO DO: ADD THE DIFFENCES FROM THE REPORT TO AN ARRAY OR STH, AND PUT THEM IN THE 
+===========        REPORT (CAN CREATE ANOTHER PAGE, SUMMARY OF DOM DIFFERENCES GROUPED BY URL)
 * ========= FKING PAIN IN THE ASS */
+
 var compare =  require('./dom-compare').compare
 var reporter =  require('./dom-compare').GroupingReporter
 
-var result, diff, groupedDiff, tab, current;
-function domCompare(){
-   /* GET THE CURRENT DOM OF TABS THAT USERS ARE LOOKING AT */
-   current = document.body;   
-   console.log("current");
-   console.log(current.innerHTML);
-   
-   // =======================USING WINDOWS ON LOAD SO THAT THE BROWSER API DOESNT THROW EXCEPTION BUT IDT IT REALLY MATTERS.===========================
+var result, current, original;
 
+/* =======================================GETTING THE EXPECTED DOM=======================================*/
+function expectedDOM(){
+  
    /* GET ACTIVE TABS ONLY. IF WANT ALL TABS IN WINDOW, REMOVE ACTIVE: TRUE */
    browser.tabs.query({currentWindow: true, active: true }).then((tabs) => {
-      /* GET ALL THE TABS */
-      // for (let tab of tabs){
-      //    console.log("all tabs:"+ tab.url);
-      // }
-
-      /* FOR ACTIVE TAB ONLY. IF U WANT ALL TABS, UNCOMMENT THE FOR LOOP ABOVE AND REMOVE ACTIVE: TRUE */
-      console.log("Curr tabs:" + tabs[0].url);
       tab = tabs[0].url;
-      console.log("url:" + tab);
+      console.log("Expected URL:" + tab);
+
+      /* GETS THE EXPECTED DOM BY QUERYING IT OURSELVES, AFTER OBTAINING THE URLS OF OPEN TABS */
+      fetch(tab).then(res => res.text()).then((responseText) => {
+
+         const doc = new DOMParser().parseFromString(responseText, 'text/html');
+         let temp = doc.querySelector('body').innerHTML;   
+         original = new DOMParser().parseFromString(temp, 'text/html');
+         console.log("original" + original);
+
+      })
    })
    
-   
-   /* GETS THE EXPECTED DOM BY QUERYING IT OURSELVES, AFTER OBTAINING THE URLS OF OPEN TABS */
-   fetch(tab).then(res => res.text()).then((responseText) => {
-      const doc = new DOMParser().parseFromString(responseText, 'text/html');
-      original = doc.querySelector('body');   
-      console.log("Original");
-      console.log(original);
-   
-      analyseDOM(original);
+}
+/* ==================================END===================================== */
+
+/* START OF CONTENT-SCRIPT CODE THINGS */
+
+/* ==============================GET ACTIVE TABS=============================== */
+function getActiveTab()
+{
+   /* GET ACTIVE TABS ONLY. IF WANT ALL TABS IN WINDOW, REMOVE ACTIVE: TRUE */
+   return browser.tabs.query({currentWindow: true, active: true })
+} 
+/* ==================================END===================================== */
+/* ==============INITIATE COMMUNICATION TO TABS RECEIVED BY FUNCTION IN CONTENT-SCRIPT.JS=============== */
+function getTabsSendmessage()
+{
+   getActiveTab().then((tabs) => {
+      let tab = tabs[0]
+      /* THE MESSAGE WE SENDING TO TAB, IN THIS FORMAT (TAB.ID, MESSAGE) */
+      browser.tabs.sendMessage(
+         tab.id,
+         {greeting: "Hi from bundle.js"}
+      ).then(response => {
+         /* RESPONSE WE GOT BACK FROM CONTENT-SCRIPT.JS */
+         console.log("Message from the content-script.js:");
+         // console.log(response.response);
+         // Changing the response back to document type, from currentDOM.innerHTML
+         current = new DOMParser().parseFromString(response.response, "text/html");
+         console.log("current:" + current);
+         //get the expected DOM
+         expectedDOM();
+         // compare the two DOM
+         analyseDOM();
+      });
    })
-};
-
-
-function analyseDOM(original){
-
-   /* COMPARES THE DOM USING THE DOM-COMPARE MODULE. FUNCTION COMPARE IS BEING DECLARED ABOVE */
+}
+/* ==================================END===================================== */
+/* =========CHECKS IF DOCUMENT IS READY BUT HONESTLY MCM NO DIFF LMAO USELESS============ */
+function sendMessageToTabs() {
+   if(document.readyState === 'ready' || document.readyState === 'complete') 
+   {
+      getTabsSendmessage();
+   } 
+   else 
+   {
+      document.onreadystatechange = function () 
+      {
+         if (document.readyState == "complete") 
+         {
+            getTabsSendmessage();
+         }
+      }
+   }
+}
+/* ==================================END===================================== */
+/* =============================DOM COMPARISON =================================*/
+function analyseDOM(){
+   /* ONLY ABLE TO COMPARE DOCUMENT TYPE, NOT STRINGS*/
    result = compare(original, current);
 
    // get comparison result
    // console.log("Result:")
-   console.log("Results:" + result.getResult()); // false cause' trees are different
+   console.log("Results:" + result.getResult()); // false IF trees are different
 
    // get all differences
    diff = result.getDifferences(); // array of diff-objects
@@ -845,26 +888,18 @@ function analyseDOM(original){
    // string representation
    console.log(reporter.report(result));
 }
+/* ==================================END===================================== */
 
-// setInterval(domCompare, 3000);
-// setInterval('console.log("Running interval 3000")', 3000);
+/* =============================CONTENT SCRIPT LISTENERS =================================*/
+// update when the tab is activated
+ browser.tabs.onActivated.addListener(sendMessageToTabs);
+ 
+ // update when the tab is updated (CHANGE URL OR WATEV)
+ browser.tabs.onUpdated.addListener(sendMessageToTabs);
+/* ==================================END===================================== */
 
 /* =================DO NOT REMOVE THIS LINE =====================*/
 },{"./dom-compare":2}]},{},[11]);
+/* ==================================END===================================== */
 
-/* =================DO NOT REMOVE THIS LINE =====================*/
-
-/* THIS OPEN EXTENSION AS A TAB*/
-browser.browserAction.onClicked.addListener(openMyPage);
-function openMyPage() {
-   console.log("injecting");
-    browser.tabs.create({
-      "url": "popup/extrack.html"
-    });
- }
-
- /*
- Add openMyPage() as a listener to clicks on the browser action.
- */
- browser.browserAction.onClicked.addListener(openMyPage);
 
