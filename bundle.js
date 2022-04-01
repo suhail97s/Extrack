@@ -833,23 +833,27 @@ function getTabsSendmessage()
 {
    getActiveTab().then((tabs) => {
       let tab = tabs[0]
+      if(! (tab.url.startsWith("about:")))
+      {
+         //console.log(tab.url.startsWith("about"));
       /* THE MESSAGE WE SENDING TO TAB, IN THIS FORMAT (TAB.ID, MESSAGE) */
-      browser.tabs.sendMessage(
-         tab.id,
-         {greeting: "Hi from bundle.js"}
-      ).then(response => {
-         /* RESPONSE WE GOT BACK FROM CONTENT-SCRIPT.JS */
-         console.log("Message from the content-script.js:");
-         // console.log(response.response);
-         // Changing the response back to document type, from currentDOM.innerHTML
-         current = new DOMParser().parseFromString(response.response, "text/html");
-         console.log("current:" + current);
-         //get the expected DOM
-         expectedDOM();
-         // compare the two DOM
-         analyseDOM();
-      });
-   })
+         browser.tabs.sendMessage(
+            tab.id,
+            {greeting: "Hi from bundle.js"}
+         ).then(response => {
+            /* RESPONSE WE GOT BACK FROM CONTENT-SCRIPT.JS */
+            console.log("Message from the content-script.js:");
+            // console.log(response.response);
+            // Changing the response back to document type, from currentDOM.innerHTML
+            current = new DOMParser().parseFromString(response.response, "text/html");
+            console.log("current:" + current);
+            //get the expected DOM
+            expectedDOM();
+            // compare the two DOM
+            analyseDOM();
+            });
+         }
+   })   
 }
 /* ==================================END===================================== */
 /* =========CHECKS IF DOCUMENT IS READY BUT HONESTLY MCM NO DIFF LMAO USELESS============ */
