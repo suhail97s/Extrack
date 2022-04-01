@@ -833,7 +833,8 @@ function getTabsSendmessage()
 {
    getActiveTab().then((tabs) => {
       let tab = tabs[0]
-      if(! (tab.url.startsWith("about:")))
+      // checks if page is non "about:" page, as you cannot inject content script onto about: page
+      if(!(tab.url.startsWith("about:")))
       {
          //console.log(tab.url.startsWith("about"));
       /* THE MESSAGE WE SENDING TO TAB, IN THIS FORMAT (TAB.ID, MESSAGE) */
