@@ -84,10 +84,18 @@ function analyseExtension(e) {
     permsDescr.innerHTML = "";
 
     /* EXTENSION INFORMATION */
-    extName.innerHTML = info.name;
-    installType.innerHTML = info.installType;
+    extName.innerHTML = info.name;   
     version.innerHTML = info.version;
     homepageURL.innerHTML = info.homepageUrl;
+    if (info.installType == "normal" || info.installType == "admin")
+    {
+      installType.innerHTML = info.installType;
+    }
+    else
+    {
+      installType.innerHTML = "Add-on was <b>not installed</b> \
+      from an install package, install type: " + info.installType;
+    } 
     
     /* EXTENSION PERMS */
     if (info.hostPermissions.length != 0)
