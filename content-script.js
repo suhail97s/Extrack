@@ -1,26 +1,53 @@
 // content-script.js
 
 
-// let linkArray;
-// let resultsArray;
+// let linky;
+// let resulty;
 
-browser.runtime.onMessage.addListener(request => {
+browser.runtime.onMessage.addListener((request,sender,sendResponse) => {
   console.log("Message from the background script:");
+  let {linkArray, resultsArray} = request;
   // browser.runtime.sendMessage({"linkArray":linkArray, "resultsArray":resultsArray});
 //   console.log(document.querySelector("body"));
   let currentDOM = document.querySelector("body");
+  sendResponse(linkArray, resultsArray);
   // only can parse return value as string, not document type. so changed to innerHTML
   return Promise.resolve({response: currentDOM.innerHTML});
 });
 
 
-var table = document.getElementById("table");
+// browser.runtime.onMessage.addListener(request => {
+  
+//   linky = linkArray;
+//   resulty = resultsArray;  
+//   // AddTable(linky, resulty);
+//   return Promise.resolve({});
+//   // console.log(linkArray);
+//   // console.log(resultsArray);
+//   // browser.runtime.sendMessage({"linkArray":linkArray, "resultsArray":resultsArray});
+//   // window.dispatchEvent(new CustomEvent('SendArrays', {links: linkArray, results: resultsArray}));
+//   // console.log("SENT DISPATCH EVENT TO DOM JS");
+//   // domhidden.innerHTML(linkArray);
+//   // browser.runtime.sendMessage({"linkArray":linkArray, "resultsArray":resultsArray});
+  
+//   // exportFunction(runDispatch, window, {defineAs:'runDispatch'});
+//   // runDispatch();
+// });
+
+
+
 
 //   for (const links of linkArray) {
+// var table = document.getElementById("table");
 
 function AddTable(linkArray, resultsArray){
+  console.log(linkArray);
+  console.log(resultsArray);
+  console.log("hello cutie");
 // for (const links of linkArray) {
-    linkArray.forEach((links, index)=>{
+  var index = 0;  
+  for (var links in linkArray){
+    // linkArray.forEach((links, index)=>{
     /*=========================== GET HTML ELEMENTS =============================*/
         let linkName = document.createElement("h5");
         linkName.innerHTML = links;
@@ -52,32 +79,23 @@ function AddTable(linkArray, resultsArray){
         table.appendChild(domTable);
         table.appendChild(br);
 //  }
-    });
+        index++
+    };
 }
 
-var domBtn = document.getElementById("domBtn");
-domBtn.addEventListener('click', AddTable);
+// var domBtn = document.getElementById("domBtn");
+// if(domBtn){
+//   console.log("im herEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEe");
+// }
+// domBtn.addEventListener('click', startSendMessage);
+
+// function startSendMessage(){
+//   console.log("the real linkARray and real resulst ARray");
+//   console.log(linkArray);
+//   browser.runtime.sendMessage({"linkArray":linkArray, "resultsArray":resultsArray});
+// }
 
 // var domhidden = document.getElementById("domarrays");
-
-
-browser.runtime.onMessage.addListener(request => {
-  const {linkArray, resultsArray} = request;
-  console.log(linkArray);
-  console.log(resultsArray);
-  AddTable(linkArray, resultsArray);
-  // console.log(linkArray);
-  // console.log(resultsArray);
-  // browser.runtime.sendMessage({"linkArray":linkArray, "resultsArray":resultsArray});
-  // window.dispatchEvent(new CustomEvent('SendArrays', {links: linkArray, results: resultsArray}));
-  // console.log("SENT DISPATCH EVENT TO DOM JS");
-  // domhidden.innerHTML(linkArray);
-  // browser.runtime.sendMessage({"linkArray":linkArray, "resultsArray":resultsArray});
-  
-  // exportFunction(runDispatch, window, {defineAs:'runDispatch'});
-  // runDispatch();
-});
-
 // function runDispatch(){
 //   // window.dispatchEvent(new CustomEvent('SendArrays', {"links": linkArray, "results": resultsArray}));
 //   browser.runtime.sendMessage({"linkArray":linkArray, "resultsArray":resultsArray});

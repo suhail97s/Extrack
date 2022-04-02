@@ -842,10 +842,12 @@ function getTabsSendmessage()
          //console.log(tab.url.startsWith("about"));
       /* THE MESSAGE WE SENDING TO TAB, IN THIS FORMAT (TAB.ID, MESSAGE) */
          // linkArray.push(tab.url);
+         
          browser.tabs.sendMessage(
             tab.id,
-            {greeting:"hi there"}
+            {"linkArray":linkArray, "resultsArray":resultsArray}
          ).then(response => {
+            
             /* RESPONSE WE GOT BACK FROM CONTENT-SCRIPT.JS */
             console.log("Message from the content-script.js:");
             // console.log(response.response);
@@ -856,6 +858,7 @@ function getTabsSendmessage()
             expectedDOM();
             // compare the two DOM
             analyseDOM();
+            localStorage.setItem("results_array", JSON.stringify(resultsArray));
             // linkArray.push(tab.url);
             // module.exports = {linkArray};
             sendVarToDOM();
@@ -871,6 +874,7 @@ function sendVarToDOM()
    getActiveTab().then((tabs) => {
       let tab = tabs[0]
       linkArray.push(tab.url);
+      localStorage.setItem("link_array", JSON.stringify(linkArray));
       // module.exports = {linkArray};
       browser.tabs.sendMessage(
          tab.id,
