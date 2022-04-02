@@ -1,25 +1,42 @@
-const linkArray = [];
-const resultsArray = [];
+let linkArray;
+let resultsArray;
 
 console.log("THIS DOM JS IS ALREADY LOADAED");
+// console.log(linkArray);
 
-// browser.runtime.onMessage.addListener((message) => {
-//     // linkArray = message.linkArray;
-//     // resultsArray = message.resultsArray;
-//     const {linkArray, resultsArray} = message;
+// window.runDispatch();
+
+browser.tabs.onMessage.addListener(message => {
+    // linkArray = message.linkArray;
+    // resultsArray = message.resultsArray;
+    linkArray = message.linkArray;
+    resultsArray = message.resultsArray;
     
-//     console.log('sent TO THE DOM HTML');
-//     console.log(linkArray);
-//     console.log(resultsArray);
-// });
-
-window.addEventListener('SendArrays', function (e) {
-    linkArray = e.links;
-    resultsArray = e.results;
-    console.log('received');
+    console.log('sent TO THE DOM HTML');
     console.log(linkArray);
     console.log(resultsArray);
-  });
+});
+
+// window.addEventListener('SendArrays', function (e) {
+//     linkArray = e.links;
+//     resultsArray = e.results;
+//     console.log('received');
+//     console.log(linkArray);
+//     console.log(resultsArray);
+//   });
+
+// browser.runtime.sendMessage(
+//     {domMsg: "Hi from dom.js"}
+//  ).then(response => {
+//     /* RESPONSE WE GOT BACK FROM CONTENT-SCRIPT.JS */
+//     // console.log("Message from the content-script.js:");
+//     // console.log(response.response);
+//     // Changing the response back to document type, from currentDOM.innerHTML
+//     linkArray = response.linkRes;
+//     resultsArray = response.resultsRes;
+//     //get the expected DOM
+   
+//     });
 
 
 // browser.runtime.onMessage.addListener(request => {
@@ -32,13 +49,14 @@ window.addEventListener('SendArrays', function (e) {
 //     // browser.runtime.sendMessage(linkArray, resultsArray);
 //   });
   
-
+    // console.log(linkArray);
+    // console.log(resultsArray);
 var table = document.getElementById("table");
 var riskTable = document.getElementById("riskTable");
 
 //   for (const links of linkArray) {
-if(linkArray.length != 0){
-    linkArray.forEach((links, index)=>{
+if(length != 0){
+    forEach((links, index)=>{
     /*=========================== GET HTML ELEMENTS =============================*/
         let linkName = document.createElement("h5");
         linkName.innerHTML = links;
