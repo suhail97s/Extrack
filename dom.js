@@ -89,8 +89,7 @@ function test(linkArray1,resultsArray2){
             let thDOMLevel = document.createElement("th");
             let tdDOMLevel = document.createElement("td");
         /*=========================== END OF HTML ELEMENTS =============================*/
-            
-            domTable.className = 'table table-hover table-secondary';
+            domTable.className = 'table table-hover table-info';
             
             thDOMLevel.innerHTML = "DOM Changes";
             thDOMLevel.className = "col-lg-2 col-md-2 col-sm-2"

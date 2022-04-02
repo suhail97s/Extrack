@@ -943,7 +943,13 @@ function sendMessageToTabs() {
 /* =============================DOM COMPARISON =================================*/
 function analyseDOM(){
    /* ONLY ABLE TO COMPARE DOCUMENT TYPE, NOT STRINGS*/
-   result = compare(original, current);
+   var options = {
+      stripSpaces: true,
+      compareComments: true,
+      collapseSpaces: true,
+      normalizeNewlines: false
+  };
+   result = compare(original, current, options);
 
    // get comparison result
    // console.log("Result:")
@@ -957,6 +963,7 @@ function analyseDOM(){
 
    // string representation
    console.log(reporter.report(result));
+   //resultsArray.push(JSON.stringify(reporter.report(result)).replace(/\\n/g, ''));
    resultsArray.push(reporter.report(result));
    // AddTable();
 }
