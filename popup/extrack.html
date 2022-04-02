@@ -16,6 +16,8 @@
         <div style="display: block" id="myList" class="card-text list-group">
             <h2 class="card-title d-inline"><strong>Firefox Extension List</strong></h2>
             <a id="reportBtn" class="btn btn-primary d-inline float-end" href="report.html" role="button">Generate Report</a>
+            <a id="domBtn" class="btn btn-secondary d-inline float-end" href="dom.html" role="button">DOM Changes</a>
+
             <br><br><br>
           </div>
         <div style="display: none" id="table">
@@ -57,9 +59,10 @@
         </div>
       </div>
     </div>
-
+    <div type="hidden" id="domarrays" name="domarrays"></div>
 
     <script src="../extrack.js"></script>
+    <script src="../content-script.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
   </body>
   
