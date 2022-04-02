@@ -8,8 +8,8 @@
 /* Global */
 html, body {
   /* max-height: 90vh; */
-  min-width: 500px;
-  max-height: 300px;
+  min-width: 450px;
+  max-height: 500px;
   overflow-y: auto;
   /* scrollbar-width: none; */
 }
