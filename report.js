@@ -217,22 +217,3 @@ function showExtensionList(e)
   }
 }
 /*============================= END OF SHOW EXTENSION LIST================================*/
-
-
-/* =====================LISTENERS =======================*/
-// let backBtn = document.getElementById("backBtn");
-//change to onclick
-// list.addEventListener('click', analyseExtension);
-// backBtn.addEventListener('click', showExtensionList);
-/* ==================END OF LISTENERS ====================*/
-
-
-/* ===========================THIS OPEN EXTENSION AS A TAB========================*/
-// function openMyPage() {
-//   console.log("injecting");
-//   window.focus;
-//   browser.tabs.create({
-//     "url": "popup/extrack.html"
-//   });
-// }
-// browser.browserAction.onClicked.addListener(openMyPage);
