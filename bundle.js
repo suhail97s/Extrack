@@ -797,6 +797,9 @@ var reporter =  require('./dom-compare').GroupingReporter
 
 var result, current, original;
 
+const linkArray = [];
+const resultsArray = [];
+
 /* =======================================GETTING THE EXPECTED DOM=======================================*/
 function expectedDOM(){
   
@@ -812,7 +815,6 @@ function expectedDOM(){
          let temp = doc.querySelector('body').innerHTML;   
          original = new DOMParser().parseFromString(temp, 'text/html');
          console.log("original" + original);
-
       })
    })
    
@@ -833,25 +835,93 @@ function getTabsSendmessage()
 {
    getActiveTab().then((tabs) => {
       let tab = tabs[0]
+      // checks if page is non "about:" page, as you cannot inject content script onto about: page
+      if(!(tab.url.startsWith("about:")))
+      {
+         // linkArray.push(tab.url);
+         //console.log(tab.url.startsWith("about"));
       /* THE MESSAGE WE SENDING TO TAB, IN THIS FORMAT (TAB.ID, MESSAGE) */
+         // linkArray.push(tab.url);
+         
+         browser.tabs.sendMessage(
+            tab.id,
+            {"linkArray":linkArray, "resultsArray":resultsArray}
+         ).then(response => {
+            
+            /* RESPONSE WE GOT BACK FROM CONTENT-SCRIPT.JS */
+            console.log("Message from the content-script.js:");
+            // console.log(response.response);
+            // Changing the response back to document type, from currentDOM.innerHTML
+            current = new DOMParser().parseFromString(response.response, "text/html");
+            console.log("current:" + current);
+            //get the expected DOM
+            expectedDOM();
+            // compare the two DOM
+            analyseDOM();
+            localStorage.setItem("results_array", JSON.stringify(resultsArray));
+            // linkArray.push(tab.url);
+            // module.exports = {linkArray};
+            sendVarToDOM();
+            
+            });
+         }
+   })   
+}
+/* ==================================END===================================== */
+
+function sendVarToDOM()
+{
+   getActiveTab().then((tabs) => {
+      let tab = tabs[0]
+      linkArray.push(tab.url);
+      localStorage.setItem("link_array", JSON.stringify(linkArray));
+      // module.exports = {linkArray};
       browser.tabs.sendMessage(
          tab.id,
-         {greeting: "Hi from bundle.js"}
+         {"linkArray":linkArray, "resultsArray":resultsArray}
       ).then(response => {
-         /* RESPONSE WE GOT BACK FROM CONTENT-SCRIPT.JS */
-         console.log("Message from the content-script.js:");
-         // console.log(response.response);
-         // Changing the response back to document type, from currentDOM.innerHTML
-         current = new DOMParser().parseFromString(response.response, "text/html");
-         console.log("current:" + current);
-         //get the expected DOM
-         expectedDOM();
-         // compare the two DOM
-         analyseDOM();
+         console.log("after DOM messaged sent from content-script");
       });
    })
 }
-/* ==================================END===================================== */
+
+
+let table = document.getElementById("table");
+function AddTable(){
+   // for (const links of linkArray) {
+       linkArray.forEach((links, index)=>{
+       /*=========================== GET HTML ELEMENTS =============================*/
+           let linkName = document.createElement("h5");
+           linkName.innerHTML = links;
+           table.appendChild(linkName);
+           let br = document.createElement("br");
+           let domTable = document.createElement("table");
+           let tbodyDOM = document.createElement("tbody");
+           let trDOMHead = document.createElement("tr");
+           let trDOMBody = document.createElement("tr");
+           let thDOMLevel = document.createElement("th");
+           let tdDOMLevel = document.createElement("td");
+       /*=========================== END OF HTML ELEMENTS =============================*/
+           
+           domTable.className = 'table table-hover table-secondary';
+           
+           thDOMLevel.innerHTML = "DOM Changes";
+           thDOMLevel.className = "col-lg-2 col-md-2 col-sm-2"
+           trDOMHead.appendChild(thDOMLevel);
+           trDOMHead.className = "table-active"
+           tbodyDOM.appendChild(trDOMHead);
+
+           tdDOMLevel.innerHTML = resultsArray[index];
+
+           trDOMBody.appendChild(tdDOMLevel);
+           tbodyDOM.appendChild(trDOMBody);
+           domTable.append(tbodyDOM);
+           table.appendChild(domTable);
+           table.appendChild(br);
+       });
+   }
+
+
 /* =========CHECKS IF DOCUMENT IS READY BUT HONESTLY MCM NO DIFF LMAO USELESS============ */
 function sendMessageToTabs() {
    if(document.readyState === 'ready' || document.readyState === 'complete') 
@@ -873,7 +943,13 @@ function sendMessageToTabs() {
 /* =============================DOM COMPARISON =================================*/
 function analyseDOM(){
    /* ONLY ABLE TO COMPARE DOCUMENT TYPE, NOT STRINGS*/
-   result = compare(original, current);
+   var options = {
+      stripSpaces: true,
+      compareComments: true,
+      collapseSpaces: true,
+      normalizeNewlines: false
+  };
+   result = compare(original, current, options);
 
    // get comparison result
    // console.log("Result:")
@@ -887,6 +963,9 @@ function analyseDOM(){
 
    // string representation
    console.log(reporter.report(result));
+   //resultsArray.push(JSON.stringify(reporter.report(result)).replace(/\\n/g, ''));
+   resultsArray.push(reporter.report(result));
+   // AddTable();
 }
 /* ==================================END===================================== */
 
