@@ -28,23 +28,10 @@ var hrpDescription = ["",
   // "Enables extensions to interact with code running on webpage which matches any URL that uses the https: or http: scheme." // *://*/*
 ];
 
-
-
 /*==========================END OF PERMISSION CLASSIFICATIONS FOR FIREFOX ==========================*/
 
 
 function analyseExtension(e) {
-  //browser.management.setEnabled(e.target.value, true);
-  // parse extension id to find more info
-  //alert(management.ExtensionInfo(e.target.value))
-
-  /*=========================== GET CURRENT TAB URL =============================*/
-  browser.tabs.query({currentWindow: true, active: true})
-    .then((tabs) => {
-      console.log("tabs:" + tabs[0].url);
-  })
-  /*=========================== END OF CURRENT TAB URL =============================*/
-
   /*============================= SHOW EXTENSION INFO =================================*/
   if (e.target.type === "button")
   {
@@ -87,6 +74,13 @@ function analyseExtension(e) {
     extName.innerHTML = info.name;   
     version.innerHTML = info.version;
     homepageURL.innerHTML = info.homepageUrl;
+
+    /* "admin": the add-on was installed because of an administrative policy.
+       "development": the add-on was installed unpacked from disk.
+       "normal": the add-on was installed normally from an install package.
+       "sideload": the add-on was installed by some other software on the user's computer.
+       "other": the add-on was installed in some other way.
+    */
     if (info.installType == "normal" || info.installType == "admin")
     {
       installType.innerHTML = info.installType;
@@ -179,8 +173,6 @@ function analyseExtension(e) {
       
       }
     }
- 
-
     /* NO RISKS IDENTIFIED */
     if (identified_risk=="" && hostPermsCount == 0)
     {
@@ -189,14 +181,6 @@ function analyseExtension(e) {
       riskPerms.innerHTML = "No Permissions";
       permsDescr.innerHTML = "" + "<br>";
     }
-
-    // info.installType
-    // "admin": the add-on was installed because of an administrative policy.
-    // "development": the add-on was installed unpacked from disk.
-    // "normal": the add-on was installed normally from an install package.
-    // "sideload": the add-on was installed by some other software on the user's computer.
-    // "other": the add-on was installed in some other way.
-
   });  
 }
 
@@ -226,9 +210,9 @@ browser.management.getAll().then((extensions) => {
     if (extension.enabled) {
       let divListItem = document.createElement("button")
       divListItem.type = "button"
-      divListItem.className = "text-dark list-group-item list-group-item-action list-group-item-light"
-      divListItem.id = extension.name
-      divListItem.value = extension.id
+      divListItem.className = "text-dark list-group-item list-group-item-action list-group-item-light";
+      divListItem.id = extension.name;
+      divListItem.value = extension.id;
       divListItem.innerText = extension.name;
       list.appendChild(divListItem);
     }
@@ -241,37 +225,3 @@ let backBtn = document.getElementById("backBtn");
 list.addEventListener('click', analyseExtension);
 backBtn.addEventListener('click', showExtensionList);
 /* ==================END OF LISTENERS ====================*/
-
-
-// let observer = new MutationObserver((mutations) => {
-//   console.log(mutations)
-//   mutations.forEach((mutation) => {
-//     let oldValue = mutation.oldValue;
-//     let newValue = mutation.target; //.textContent
-//     if (oldValue !== newValue) {
-//         console.log("The changes are :" + oldValue + " and new value : " + newValue);
-//     }
-//   });
-// });
-
-
-
-// observer.observe(document.body, {
-//   characterDataOldValue: true, 
-//   subtree: true, 
-//   childList: true, 
-//   characterData: true
-// });
-
-
-/* THIS OPEN EXTENSION AS A TAB*/
-// function openMyPage() {
-//   console.log("injecting");
-//   window.focus;
-//   browser.tabs.create({
-//     "url": "popup/extrack.html"
-//   });
-// }
-
-
-browser.browserAction.onClicked.addListener(openMyPage);

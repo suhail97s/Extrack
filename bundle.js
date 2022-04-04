@@ -862,24 +862,17 @@ function getTabsSendmessage()
    })   
 }
 /* ==================================END===================================== */
-
+/* =========================== GET ACTIVE TABS =============================*/
 function sendVarToDOM()
 {
    getActiveTab().then((tabs) => {
       let tab = tabs[0]
       linkArray.push(tab.url);
       localStorage.setItem("link_array", JSON.stringify(linkArray));
-      // module.exports = {linkArray};
-      browser.tabs.sendMessage(
-         tab.id,
-         {"linkArray":linkArray, "resultsArray":resultsArray}
-      ).then(response => {
-         console.log("after DOM messaged sent from content-script");
-      });
    })
 }
-
-/* =========CHECKS IF DOCUMENT IS READY BUT HONESTLY MCM NO DIFF LMAO USELESS============ */
+/* ==================================END===================================== */
+/* =========CHECKS IF DOCUMENT IS READY ============ */
 function sendMessageToTabs() {
    if(document.readyState === 'ready' || document.readyState === 'complete') 
    {
@@ -909,10 +902,6 @@ function analyseDOM(){
       normalizeNewlines: false
   };
    result = compare(original, current, options);
-
-   // get comparison result, false IF trees are different
- 
-
    // get all differences in array
    diff = result.getDifferences();
    if (diff != undefined)
@@ -926,15 +915,6 @@ function analyseDOM(){
       }
       resultsArray.push(formattedCurrent);
    }
-
-   // differences, grouped by node XPath
-   groupedDiff = reporter.getDifferences(result); // object, key - node XPATH, value - array of differences (strings)
-
-   // string representation
-   // console.log(reporter.report(result));
-   //resultsArray.push(JSON.stringify(reporter.report(result)).replace(/\\n/g, ''));
-   resultsArray.push(reporter.report(result));
-   // AddTable();
 }
 /* ==================================END===================================== */
 

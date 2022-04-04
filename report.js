@@ -39,6 +39,7 @@ function analyseExtension(extension) {
  /*=========================== GET HTML ELEMENTS =============================*/
   let extName = document.createElement("h5");
   extName.innerHTML = extension.name;
+  extName.style.fontWeight = "bold";
   table.appendChild(extName);
   let br = document.createElement("br");
   
@@ -67,8 +68,10 @@ function analyseExtension(extension) {
   let tdURL = document.createElement("td");
   
 /*=========================== END OF HTML ELEMENTS =============================*/
-  extTable.className = 'table table-hover table-info';
-  riskTable.className = 'table table-hover table-secondary';
+  extTable.className = 'table table-hover';
+  extTable.style.background = "lavenderBlush"
+  riskTable.className = 'table table-hover';
+  riskTable.style.background = "lavender"
   
   thName.innerHTML = "Name";
   thName.className = "col-lg-2 col-md-2 col-sm-2"

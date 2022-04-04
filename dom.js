@@ -16,26 +16,22 @@ function addTable(linkArray1,resultsArray2){
                 linkName.innerHTML = linkArray1[i];
                 table.appendChild(linkName);
                 let br = document.createElement("br");
-                let domTable = document.createElement("table");
-                let tbodyDOM = document.createElement("tbody");
-                let trDOMHead = document.createElement("tr");
-                let trDOMBody = document.createElement("tr");
-                let thDOMLevel = document.createElement("th");
-                let tdDOMLevel = document.createElement("td");
+                let domTable = document.createElement("div");
+                let tdDOMLevel = document.createElement("p");
                 /*=========================== END OF HTML ELEMENTS =============================*/
-                domTable.className = 'table table-hover table-info';
-            
-                thDOMLevel.innerHTML = "DOM Changes";
-                thDOMLevel.className = "col-lg-2 col-md-2 col-sm-2"
-                trDOMHead.appendChild(thDOMLevel);
-                trDOMHead.className = "table-active"
-                tbodyDOM.appendChild(trDOMHead);
+                linkName.style.marginLeft = "20px";
+                linkName.style.marginRight = "20px";
+                linkName.style.fontWeight = "bold";
+                domTable.className = 'overflow-auto';
+                domTable.style.maxHeight = "300px";
+                domTable.style.margin = "20px";
+                domTable.style.padding = "20px";
+                domTable.style.background = "Linen";
+                tdDOMLevel.style.fontFamily = "monospace";
             
                 tdDOMLevel.innerHTML = resultsArray2[i];
                 
-                trDOMBody.appendChild(tdDOMLevel);
-                tbodyDOM.appendChild(trDOMBody);
-                domTable.append(tbodyDOM);
+                domTable.append(tdDOMLevel);
                 table.appendChild(domTable);
                 table.appendChild(br);
             }

@@ -10,20 +10,20 @@
 
   <body>
     
-    <div id="list" class="card text-dark bg-light">
-      <div class="card-header display-5 text-center text-dark bg-warning"><strong>Extrack</strong></div>
+    <div id="list" style="font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;"
+    class="card text-dark bg-light">
+      <div style="background-color: teal;" class="card-header display-5 text-center text-light"><strong>Extrack</strong></div>
       <div class="card-body">
         <div style="display: block" id="myList" class="card-text list-group">
             <h2 class="card-title d-inline"><strong>Firefox Extension List</strong></h2>
-            <a id="reportBtn" class="btn btn-primary d-inline float-end" href="report.html" role="button">Generate Report</a>
-            <a id="domBtn" class="btn btn-secondary d-inline float-end" href="dom.html" role="button">DOM Changes</a>
-
+            <a id="reportBtn" style="margin-left: 2px; margin-right: 2px;" class="btn btn-primary d-inline float-end" href="report.html" role="button">Generate Report</a>
+            <a id="domBtn" style="margin-left: 2px; margin-right: 2px;" class="btn btn-secondary d-inline float-end" href="dom.html" role="button">DOM Changes</a>
             <br><br><br>
           </div>
         <div style="display: none" id="table">
           <h5 class="card-title"><strong>Firefox Extension Information</strong></h5>
-          <table id="myTable" class="table table-hover">
-            <tr>
+          <table id="myTable" style="background-color: mistyrose;" class="table table-hover">
+            <tr class="table-active">
               <th scope="col" class="col-lg-2 col-md-2 col-sm-2">Name</th>
               <th scope="col" class="col-lg-2 col-md-2 col-sm-2">Permissions</th>
               <th scope="col" class="col-lg-2 col-md-2 col-sm-2">Type</th>
@@ -43,8 +43,8 @@
       <div class="card-body">
         <div class="table-responsive" style="display: none" id="riskTable">
           <h5 class="card-title"><strong>Health Information</strong></h5>
-          <table class="table table-hover">
-            <tr>
+          <table style="background-color: lavender;" class="table table-hover">
+            <tr class="table-active">
               <th scope="col" class="col-lg-2 col-md-2 col-sm-2">Risk Level</th>
               <th scope="col" class="col-lg-2 col-md-2 col-sm-2">Permissions</th>
               <th scope="col" class="col-lg-2 col-md-2 col-sm-2">Permission Description</th>
