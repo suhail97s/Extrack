@@ -839,11 +839,8 @@ function getTabsSendmessage()
          ).then(response => {
             
             /* RESPONSE WE GOT BACK FROM CONTENT-SCRIPT.JS */
-            console.log("Message from the content-script.js:");
-            // console.log(response.response);
             // Changing the response back to document type, from currentDOM.innerHTML
             current = new DOMParser().parseFromString(response.response, "text/html");
-            console.log("current:" + current);
             //get the expected DOM
             expectedDOM();
             // compare the two DOM
@@ -853,8 +850,6 @@ function getTabsSendmessage()
             }
             // analyseDOM();
             localStorage.setItem("results_array", JSON.stringify(resultsArray));
-            // linkArray.push(tab.url);
-            // module.exports = {linkArray};
             sendVarToDOM();
             
             });
@@ -892,8 +887,7 @@ function sendMessageToTabs() {
 /* ==================================END===================================== */
 /* =============================DOM COMPARISON =================================*/
 function analyseDOM(){
-   console.log("analyseDOMOriginal:" + original);
-   console.log("analyseDOMCurrent:" + current);
+
    /* ONLY ABLE TO COMPARE DOCUMENT TYPE, NOT STRINGS*/
    var options = {
       stripSpaces: true,
@@ -908,7 +902,6 @@ function analyseDOM(){
    {
       let formattedCurrent = String(diff[0].message).concat("<br>"), temp;
       for (let i = 1; i < diff.length; i++){
-         console.log(formattedCurrent);
          temp = String(diff[i].message);
          formattedCurrent = formattedCurrent.concat(temp);
          formattedCurrent = formattedCurrent.concat("<br>");
