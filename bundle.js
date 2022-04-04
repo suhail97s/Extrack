@@ -786,11 +786,6 @@ process.umask = function() { return 0; };
 
 /* ========================================================================DO NOT CHANGE ANY CODES ABOVE THIS LINE============================================================*/
 
-/* ======== PROBLEM: ONLY WORK IF AT THE TIME U OPEN THE BROWSER, THERE ARE 
-===========         ALREADY TABS OPENED (OR WHEN U ADDON THE EXTENSION, THE TAB IS ALREADY OPEN)
-=========== TO DO: ADD THE DIFFENCES FROM THE REPORT TO AN ARRAY OR STH, AND PUT THEM IN THE 
-===========        REPORT (CAN CREATE ANOTHER PAGE, SUMMARY OF DOM DIFFERENCES GROUPED BY URL)
-* ========= FKING PAIN IN THE ASS */
 
 var compare =  require('./dom-compare').compare
 var reporter =  require('./dom-compare').GroupingReporter
@@ -838,11 +833,6 @@ function getTabsSendmessage()
       // checks if page is non "about:" page, as you cannot inject content script onto about: page
       if(!(tab.url.startsWith("about:")))
       {
-         // linkArray.push(tab.url);
-         //console.log(tab.url.startsWith("about"));
-      /* THE MESSAGE WE SENDING TO TAB, IN THIS FORMAT (TAB.ID, MESSAGE) */
-         // linkArray.push(tab.url);
-         
          browser.tabs.sendMessage(
             tab.id,
             {"linkArray":linkArray, "resultsArray":resultsArray}
@@ -857,7 +847,11 @@ function getTabsSendmessage()
             //get the expected DOM
             expectedDOM();
             // compare the two DOM
-            analyseDOM();
+            if (original != undefined && current != undefined)
+            {
+               analyseDOM();
+            }
+            // analyseDOM();
             localStorage.setItem("results_array", JSON.stringify(resultsArray));
             // linkArray.push(tab.url);
             // module.exports = {linkArray};
@@ -885,43 +879,6 @@ function sendVarToDOM()
    })
 }
 
-
-let table = document.getElementById("table");
-function AddTable(){
-   // for (const links of linkArray) {
-       linkArray.forEach((links, index)=>{
-       /*=========================== GET HTML ELEMENTS =============================*/
-           let linkName = document.createElement("h5");
-           linkName.innerHTML = links;
-           table.appendChild(linkName);
-           let br = document.createElement("br");
-           let domTable = document.createElement("table");
-           let tbodyDOM = document.createElement("tbody");
-           let trDOMHead = document.createElement("tr");
-           let trDOMBody = document.createElement("tr");
-           let thDOMLevel = document.createElement("th");
-           let tdDOMLevel = document.createElement("td");
-       /*=========================== END OF HTML ELEMENTS =============================*/
-           
-           domTable.className = 'table table-hover table-secondary';
-           
-           thDOMLevel.innerHTML = "DOM Changes";
-           thDOMLevel.className = "col-lg-2 col-md-2 col-sm-2"
-           trDOMHead.appendChild(thDOMLevel);
-           trDOMHead.className = "table-active"
-           tbodyDOM.appendChild(trDOMHead);
-
-           tdDOMLevel.innerHTML = resultsArray[index];
-
-           trDOMBody.appendChild(tdDOMLevel);
-           tbodyDOM.appendChild(trDOMBody);
-           domTable.append(tbodyDOM);
-           table.appendChild(domTable);
-           table.appendChild(br);
-       });
-   }
-
-
 /* =========CHECKS IF DOCUMENT IS READY BUT HONESTLY MCM NO DIFF LMAO USELESS============ */
 function sendMessageToTabs() {
    if(document.readyState === 'ready' || document.readyState === 'complete') 
@@ -942,6 +899,8 @@ function sendMessageToTabs() {
 /* ==================================END===================================== */
 /* =============================DOM COMPARISON =================================*/
 function analyseDOM(){
+   console.log("analyseDOMOriginal:" + original);
+   console.log("analyseDOMCurrent:" + current);
    /* ONLY ABLE TO COMPARE DOCUMENT TYPE, NOT STRINGS*/
    var options = {
       stripSpaces: true,
@@ -951,18 +910,28 @@ function analyseDOM(){
   };
    result = compare(original, current, options);
 
-   // get comparison result
-   // console.log("Result:")
-   console.log("Results:" + result.getResult()); // false IF trees are different
+   // get comparison result, false IF trees are different
+ 
 
-   // get all differences
-   diff = result.getDifferences(); // array of diff-objects
+   // get all differences in array
+   diff = result.getDifferences();
+   if (diff != undefined)
+   {
+      let formattedCurrent = String(diff[0].message).concat("<br>"), temp;
+      for (let i = 1; i < diff.length; i++){
+         console.log(formattedCurrent);
+         temp = String(diff[i].message);
+         formattedCurrent = formattedCurrent.concat(temp);
+         formattedCurrent = formattedCurrent.concat("<br>");
+      }
+      resultsArray.push(formattedCurrent);
+   }
 
    // differences, grouped by node XPath
    groupedDiff = reporter.getDifferences(result); // object, key - node XPATH, value - array of differences (strings)
 
    // string representation
-   console.log(reporter.report(result));
+   // console.log(reporter.report(result));
    //resultsArray.push(JSON.stringify(reporter.report(result)).replace(/\\n/g, ''));
    resultsArray.push(reporter.report(result));
    // AddTable();
