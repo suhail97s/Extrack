@@ -7,10 +7,7 @@
 
 /* Global */
 html, body {
-  /* max-height: 90vh; */
   min-width: 450px;
-  max-height: 500px;
+  max-height: 550px;
   overflow-y: auto;
-  /* scrollbar-width: none; */
 }
-

@@ -9,318 +9,318 @@
 
   <body>
     
-    <div class="card text-dark bg-light">
-      <div class="card-header display-5 text-center text-dark bg-warning"><strong>Extrack</strong></div>
-      <div class="card-body">
-        <div id="table">
-          <h2 class="card-title d-inline"><strong>Permission Lists</strong></h2>
-          <a id="reportBtn" class="btn btn-primary d-inline float-end" href="extrack.html" role="button">Close</a>
-          <a id="reportBtn" class="btn btn-secondary d-inline float-end" href="summary.html" role="button">Summary</a>
+    <div style="font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;" class="card text-dark bg-light">
+        <div style="background-color: teal;" class="card-header display-5 text-center text-light"><strong>Extrack</strong></div>
+        <div class="card-body">
+            <div id="table">
+            <h3 class="card-title d-inline"><strong>Permission Lists</strong></h3>
+            <a style="margin-left: 2px; margin-right: 2px;" class="btn btn-primary d-inline float-end" href="extrack.html" role="button">Close</a>
+            <a style="margin-left: 2px; margin-right: 2px;" class="btn btn-secondary d-inline float-end" href="summary.html" role="button">Summary</a>
 
-          <br><br>
-          <h5>Highest Risk</h5>
-          <br>
-          <p style="margin-left: 50px; margin-right: 50px"><em ><strong>These permissions require rights on devices or sites that could pose a security risk. Note that risk is
-            subjective to each enterprise or IT admin. The information in the tables below is a starting point, and it is up
-            to you to evaluate this information according to the needs and security protocols of your organization.</strong></em></p>
             <br><br>
-            <table class="table table-hover table-danger">
-                <tr class="table-active">
-                <th scope="col">Permission</th>
-                <th scope="col">Description</th>
-                <th scope="col">Risk</th>
-                </tr>
-                <tr>
-                <td>Host Permission</td>
-                <td>Host permissions allow developers to get access based on a specified list of
-                    hosts. The risk level of these permissions is dependent on the site it’s requesting access
-                    to. If it’s for your corporate site, that poses a higher risk than an extension
-                    requesting access to another site such as example.com, which has no
-                    user-specific data.</td>
-                <td>Highest</td>
-                </tr>
-            </table>
-            <h5>High Risk</h5> 
+            <h5>Highest Risk</h5>
             <br>
-            <table class="table table-hover table-danger">
-                <tr class="table-active">
-                    <th scope="col">Permission</th>
-                    <th scope="col">Description</th>
-                    <th scope="col">Risk</th>
-                </tr>
-                <tr>
-                    <td>all_urls</td>
-                    <td>The extension wants to interact with the code running on pages which matches
-                        any URL that starts with a permitted scheme (http:, https:, file:, ftp:, or
-                        chrome-extension). Can be a broad permission with possible risk</td>
-                    <td>High</td>
-                </tr>
-                <tr>
-                    <td>browsingData</td>
-                    <td>Clears browsing data which could result in a forensics/logging issues</td>
-                    <td>High</td>
-                </tr>
-                <tr>
-                    <td>downloads.open</td>
-                    <td>Used in conjunction with downloads. Allows an extension to open a downloaded
-                        file; as above, can be used to run a downloaded script</td>
-                    <td>High</td>
-                </tr>
-                <tr>
-                    <td>history</td>
-                    <td>Full history (read, add, delete)</td>
-                    <td>High</td>
-                </tr>
-                <tr>
-                    <td>nativeMessaging</td>
-                    <td>Allows native (Win, Linux, Mac) programs that register with chrome to talk with
-                        extensions</td>
-                    <td>High</td>
-                </tr>
-                <tr>
-                    <td>privacy</td>
-                    <td>Can turn off malware protections (e.g.
-                        chrome.privacy.services.safeBrowsingEnabled)</td>
-                    <td>High</td>
-                </tr>
-                <tr>
-                    <td>proxy</td>
-                    <td>Manage Chrome's proxy settings. Can be used to send user’s internet traffic.</td>
-                    <td>High</td>
-                </tr>
-                <tr>
-                    <td>tabs</td>
-                    <td>Can access current URLs and favicons</td>
-                    <td>High</td>
-                </tr>
-                <tr>
-                    <td>webNavigation</td>
-                    <td>Listen to the websites that a user visits</td>
-                    <td>High</td>
-                </tr>
-            </table>
-            <br>
-            <h5>Medium Risk</h5>
-            <br>
-            <p style="margin-left: 50px; margin-right: 50px"><em><strong>These permissions require rights on devices or sites that could propose a medium security risk. Note that
-                risk is subjective to each enterprise or admin</strong></em></p>
-            <br><br>
-            <table class="table table-hover table-warning">
-                <tr class="table-active">
-                    <th scope="col">Permission</th>
-                    <th scope="col">Description</th>
-                    <th scope="col">Risk</th>
-                </tr>
-                <tr>
-                    <td>activeTab</td>
-                    <td>Gives an extension temporary access to the currently active tab when the user invokes the
-                        extension as when clicking its browser action. For example, with user interaction, the
-                        extension can inject JavaScript. Access to the tab lasts while the user is on that page, and is
-                        revoked when the user navigates away or closes the tab</td>
-                    <td>Medium</td>
-                </tr>
-                <tr>
-                    <td>bookmarks</td>
-                    <td>Use the chrome.bookmarks API to create, organize, and otherwise manipulate bookmarks</td>
-                    <td>Medium</td>
-                </tr>
-                <tr>
-                    <td>clipboardRead</td>
-                    <td>Read the machine’s clipboard</td>
-                    <td>Medium</td>
-                </tr>
-                <tr>
-                    <td>clipboardWrite</td>
-                    <td>Writes to the machine’s clipboard</td>
-                    <td>Medium</td>
-                </tr>
-                <tr>
-                    <td>contextMenus</td>
-                    <td>Integrate menus for extension throughout Chrome browser</td>
-                    <td>Medium</td>
-                </tr>
-                <tr>
-                    <td>cookies</td>
-                    <td>Lookup or write cookies for any domain specified in permissions (requires host permissions
-                        to do this)</td>
-                    <td>Medium</td>
-                </tr>
-                <tr>
-                    <td>downloads</td>
-                    <td>Extension could:
-                        <br>
-                        <ul>
-                            <li>Download file(s) from extension’s specified URL</li>
-                            <li>Get/modify download history</li>
-                            <li>Remove downloaded files</li>
-                            <li>Bypass dangerous download</li>
-                        </ul>
-                    </td>
-                    <td>Medium</td>
-                </tr>
-                <tr>
-                    <td>geolocation</td>
-                    <td>Get user’s physical location without prompting the user</td>
-                    <td>Medium</td>
-                </tr>
-                <tr>
-                    <td>identity</td>
-                    <td>Extension request oAuth with users credentials - only shows the oauth prompt but does not
-                        automatically grant access</td>
-                    <td>Medium</td>
-                </tr>
-                <tr>
-                    <td>management</td>
-                    <td>Use the chrome.management API to manage the list of extensions/apps that are installed
-                        and running. For example, the extension could:<br>
-                        <ul>
-                            <li>Uninstall itself</li>
-                            <li>Disable other extensions</li>
-                            <li>Check extensions’ state</li>
-                        </ul>
-                    </td>
-                    <td>Medium</td>
-                </tr>
-                <tr>
-                    <td>sessions</td>
-                    <td>Use the chrome.sessions API to query and restore tabs and windows from a browsing
-                        session. Can keep on re-opening an ad or a bad website.</td>
-                    <td>Medium</td>
-                </tr>
-                <tr>
-                    <td>storage</td>
-                    <td>Enables extensions to store and retrieve data, and listen for changes to stored items.</td>
-                    <td>Medium</td>
-                </tr>
-                <tr>
-                    <td>topSites</td>
-                    <td>Get and/or set list of top visited sites</td>
-                    <td>Medium</td>
-                </tr>
-                <tr>
-                    <td>webRequest</td>
-                    <td>View any GET/POST request & URL (requires host permissions to do this)</td>
-                    <td>Medium</td>
-                </tr>
-                <tr>
-                    <td>webRequestBlocking</td>
-                    <td>Used with webRequest. Allows blocking of a GET/POST request (requires host permissions
-                        to do this)</td>
-                    <td>Medium</td>
-                </tr>
-                <tr>
-                    <td>browserSettings</td>
-                    <td>Enables an extension to modify certain global browser settings. </td>
-                    <td>Medium</td>
-                </tr>
-                <tr>
-                    <td>search</td>
-                    <td>Retrieves search engines and executes a search with a specific search engine.</td>
-                    <td>Medium</td>
-                </tr>
-                <tr>
-                    <td>menus</td>
-                    <td>Add items to the browser's menu system.</td>
-                    <td>Medium</td>
-                </tr>
-            </table>
-            <br>
-            <h5>Low Risk</h5>
-            <br>
-            <p style="margin-left: 50px; margin-right: 50px"><em><strong>These permissions require rights on devices or sites that could propose a low or no security risk. Note that
-                risk is subjective to each enterprise or admin</strong></em></p>
+            <p style="margin-left: 50px; margin-right: 50px"><em ><strong>These permissions require rights on devices or sites that could pose a security risk. Note that risk is
+                subjective to each enterprise or IT admin. The information in the tables below is a starting point, and it is up
+                to you to evaluate this information according to the needs and security protocols of your organization.</strong></em></p>
                 <br><br>
-            <table class="table table-hover table-info">
-                <tr class="table-active">
+                <table class="table table-hover table-danger">
+                    <tr class="table-active">
                     <th scope="col">Permission</th>
                     <th scope="col">Description</th>
                     <th scope="col">Risk</th>
-                </tr>
-                <tr>
-                    <td>alarm</td>
-                    <td>Extension can set a timer to call its own functions</td>
-                    <td>Low</td>
-                </tr>
-                <tr>
-                    <td>idle</td>
-                    <td>Determine if the system is being actively used, locked, or just not being used</td>
-                    <td>Low</td>
-                </tr>
-                <tr>
-                    <td>notifications</td>
-                    <td>Popup notifications to users on desktop</td>
-                    <td>Low</td>
-                </tr>
-                <tr>
-                    <td>storage</td>
-                    <td>Store data on computer</td>
-                    <td>Low</td>
-                </tr>
-                <tr>
-                    <td>unlimitedStorage</td>
-                    <td>Removes HTML5 storage size limits</td>
-                    <td>Low</td>
-                </tr>
-                <tr>
-                    <td>pkcs11</td>
-                    <td>The pkcs11 API enables an extension to enumerate PKCS #11 security 
-                        modules and to make them accessible to the browser as sources of 
-                        keys and certificates.</td>
-                    <td>Low</td>
-                </tr>
-                <tr>
-                    <td>captivePortal</td>
-                    <td>Determine the captive portal state of the user's connection. 
-                        A captive portal is a web page displayed when a user first connects 
-                        to a Wi-Fi network. The user provides information or acts on 
-                        the captive portal web page to gain broader access to network resources, 
-                        such as accepting terms and conditions or making a payment.</td>
-                    <td>Low</td>
-                </tr>
-                <tr>
-                    <td>contextualIdentities</td>
-                    <td>Work with contextual identities: list, create, remove, and update contextual identities.
-                        For example, a user might consider their "work identity" separate from their 
-                        "personal identity", and not want to share cookies between these two contexts.</td>
-                    <td>Low</td>
-                </tr>
-                <tr>
-                    <td>find</td>
-                    <td>Finds text in a web page, and highlights matches.</td>
-                    <td>Low</td>
-                </tr>
-                <tr>
-                    <td>identity</td>
-                    <td>Use the identity API to get an OAuth2 authorization code or access token, 
-                        which an extension can then use to access user data from a service that 
-                        supports OAuth2 access (such as Google or Facebook).</td>
-                    <td>Low</td>
-                </tr>
-                <tr>
-                    <td>dns</td>
-                    <td>Enables an extension to resolve domain names.</td>
-                    <td>Low</td>
-                </tr>
-                <tr>
-                    <td>tabHide</td>
-                    <td>Hides one or more tabs.<br>
+                    </tr>
+                    <tr>
+                    <td>Host Permission</td>
+                    <td>Host permissions allow developers to get access based on a specified list of
+                        hosts. The risk level of these permissions is dependent on the site it’s requesting access
+                        to. If it’s for your corporate site, that poses a higher risk than an extension
+                        requesting access to another site such as example.com, which has no
+                        user-specific data.</td>
+                    <td>Highest</td>
+                    </tr>
+                </table>
+                <h5>High Risk</h5> 
+                <br>
+                <table class="table table-hover table-danger">
+                    <tr class="table-active">
+                        <th scope="col">Permission</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Risk</th>
+                    </tr>
+                    <tr>
+                        <td>all_urls</td>
+                        <td>The extension wants to interact with the code running on pages which matches
+                            any URL that starts with a permitted scheme (http:, https:, file:, ftp:, or
+                            chrome-extension). Can be a broad permission with possible risk</td>
+                        <td>High</td>
+                    </tr>
+                    <tr>
+                        <td>browsingData</td>
+                        <td>Clears browsing data which could result in a forensics/logging issues</td>
+                        <td>High</td>
+                    </tr>
+                    <tr>
+                        <td>downloads.open</td>
+                        <td>Used in conjunction with downloads. Allows an extension to open a downloaded
+                            file; as above, can be used to run a downloaded script</td>
+                        <td>High</td>
+                    </tr>
+                    <tr>
+                        <td>history</td>
+                        <td>Full history (read, add, delete)</td>
+                        <td>High</td>
+                    </tr>
+                    <tr>
+                        <td>nativeMessaging</td>
+                        <td>Allows native (Win, Linux, Mac) programs that register with chrome to talk with
+                            extensions</td>
+                        <td>High</td>
+                    </tr>
+                    <tr>
+                        <td>privacy</td>
+                        <td>Can turn off malware protections (e.g.
+                            chrome.privacy.services.safeBrowsingEnabled)</td>
+                        <td>High</td>
+                    </tr>
+                    <tr>
+                        <td>proxy</td>
+                        <td>Manage Chrome's proxy settings. Can be used to send user’s internet traffic.</td>
+                        <td>High</td>
+                    </tr>
+                    <tr>
+                        <td>tabs</td>
+                        <td>Can access current URLs and favicons</td>
+                        <td>High</td>
+                    </tr>
+                    <tr>
+                        <td>webNavigation</td>
+                        <td>Listen to the websites that a user visits</td>
+                        <td>High</td>
+                    </tr>
+                </table>
+                <br>
+                <h5>Medium Risk</h5>
+                <br>
+                <p style="margin-left: 50px; margin-right: 50px"><em><strong>These permissions require rights on devices or sites that could propose a medium security risk. Note that
+                    risk is subjective to each enterprise or admin</strong></em></p>
+                <br><br>
+                <table class="table table-hover table-warning">
+                    <tr class="table-active">
+                        <th scope="col">Permission</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Risk</th>
+                    </tr>
+                    <tr>
+                        <td>activeTab</td>
+                        <td>Gives an extension temporary access to the currently active tab when the user invokes the
+                            extension as when clicking its browser action. For example, with user interaction, the
+                            extension can inject JavaScript. Access to the tab lasts while the user is on that page, and is
+                            revoked when the user navigates away or closes the tab</td>
+                        <td>Medium</td>
+                    </tr>
+                    <tr>
+                        <td>bookmarks</td>
+                        <td>Use the chrome.bookmarks API to create, organize, and otherwise manipulate bookmarks</td>
+                        <td>Medium</td>
+                    </tr>
+                    <tr>
+                        <td>clipboardRead</td>
+                        <td>Read the machine’s clipboard</td>
+                        <td>Medium</td>
+                    </tr>
+                    <tr>
+                        <td>clipboardWrite</td>
+                        <td>Writes to the machine’s clipboard</td>
+                        <td>Medium</td>
+                    </tr>
+                    <tr>
+                        <td>contextMenus</td>
+                        <td>Integrate menus for extension throughout Chrome browser</td>
+                        <td>Medium</td>
+                    </tr>
+                    <tr>
+                        <td>cookies</td>
+                        <td>Lookup or write cookies for any domain specified in permissions (requires host permissions
+                            to do this)</td>
+                        <td>Medium</td>
+                    </tr>
+                    <tr>
+                        <td>downloads</td>
+                        <td>Extension could:
+                            <br>
+                            <ul>
+                                <li>Download file(s) from extension’s specified URL</li>
+                                <li>Get/modify download history</li>
+                                <li>Remove downloaded files</li>
+                                <li>Bypass dangerous download</li>
+                            </ul>
+                        </td>
+                        <td>Medium</td>
+                    </tr>
+                    <tr>
+                        <td>geolocation</td>
+                        <td>Get user’s physical location without prompting the user</td>
+                        <td>Medium</td>
+                    </tr>
+                    <tr>
+                        <td>identity</td>
+                        <td>Extension request oAuth with users credentials - only shows the oauth prompt but does not
+                            automatically grant access</td>
+                        <td>Medium</td>
+                    </tr>
+                    <tr>
+                        <td>management</td>
+                        <td>Use the chrome.management API to manage the list of extensions/apps that are installed
+                            and running. For example, the extension could:<br>
+                            <ul>
+                                <li>Uninstall itself</li>
+                                <li>Disable other extensions</li>
+                                <li>Check extensions’ state</li>
+                            </ul>
+                        </td>
+                        <td>Medium</td>
+                    </tr>
+                    <tr>
+                        <td>sessions</td>
+                        <td>Use the chrome.sessions API to query and restore tabs and windows from a browsing
+                            session. Can keep on re-opening an ad or a bad website.</td>
+                        <td>Medium</td>
+                    </tr>
+                    <tr>
+                        <td>storage</td>
+                        <td>Enables extensions to store and retrieve data, and listen for changes to stored items.</td>
+                        <td>Medium</td>
+                    </tr>
+                    <tr>
+                        <td>topSites</td>
+                        <td>Get and/or set list of top visited sites</td>
+                        <td>Medium</td>
+                    </tr>
+                    <tr>
+                        <td>webRequest</td>
+                        <td>View any GET/POST request & URL (requires host permissions to do this)</td>
+                        <td>Medium</td>
+                    </tr>
+                    <tr>
+                        <td>webRequestBlocking</td>
+                        <td>Used with webRequest. Allows blocking of a GET/POST request (requires host permissions
+                            to do this)</td>
+                        <td>Medium</td>
+                    </tr>
+                    <tr>
+                        <td>browserSettings</td>
+                        <td>Enables an extension to modify certain global browser settings. </td>
+                        <td>Medium</td>
+                    </tr>
+                    <tr>
+                        <td>search</td>
+                        <td>Retrieves search engines and executes a search with a specific search engine.</td>
+                        <td>Medium</td>
+                    </tr>
+                    <tr>
+                        <td>menus</td>
+                        <td>Add items to the browser's menu system.</td>
+                        <td>Medium</td>
+                    </tr>
+                </table>
+                <br>
+                <h5>Low Risk</h5>
+                <br>
+                <p style="margin-left: 50px; margin-right: 50px"><em><strong>These permissions require rights on devices or sites that could propose a low or no security risk. Note that
+                    risk is subjective to each enterprise or admin</strong></em></p>
+                    <br><br>
+                <table class="table table-hover table-info">
+                    <tr class="table-active">
+                        <th scope="col">Permission</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Risk</th>
+                    </tr>
+                    <tr>
+                        <td>alarm</td>
+                        <td>Extension can set a timer to call its own functions</td>
+                        <td>Low</td>
+                    </tr>
+                    <tr>
+                        <td>idle</td>
+                        <td>Determine if the system is being actively used, locked, or just not being used</td>
+                        <td>Low</td>
+                    </tr>
+                    <tr>
+                        <td>notifications</td>
+                        <td>Popup notifications to users on desktop</td>
+                        <td>Low</td>
+                    </tr>
+                    <tr>
+                        <td>storage</td>
+                        <td>Store data on computer</td>
+                        <td>Low</td>
+                    </tr>
+                    <tr>
+                        <td>unlimitedStorage</td>
+                        <td>Removes HTML5 storage size limits</td>
+                        <td>Low</td>
+                    </tr>
+                    <tr>
+                        <td>pkcs11</td>
+                        <td>The pkcs11 API enables an extension to enumerate PKCS #11 security 
+                            modules and to make them accessible to the browser as sources of 
+                            keys and certificates.</td>
+                        <td>Low</td>
+                    </tr>
+                    <tr>
+                        <td>captivePortal</td>
+                        <td>Determine the captive portal state of the user's connection. 
+                            A captive portal is a web page displayed when a user first connects 
+                            to a Wi-Fi network. The user provides information or acts on 
+                            the captive portal web page to gain broader access to network resources, 
+                            such as accepting terms and conditions or making a payment.</td>
+                        <td>Low</td>
+                    </tr>
+                    <tr>
+                        <td>contextualIdentities</td>
+                        <td>Work with contextual identities: list, create, remove, and update contextual identities.
+                            For example, a user might consider their "work identity" separate from their 
+                            "personal identity", and not want to share cookies between these two contexts.</td>
+                        <td>Low</td>
+                    </tr>
+                    <tr>
+                        <td>find</td>
+                        <td>Finds text in a web page, and highlights matches.</td>
+                        <td>Low</td>
+                    </tr>
+                    <tr>
+                        <td>identity</td>
+                        <td>Use the identity API to get an OAuth2 authorization code or access token, 
+                            which an extension can then use to access user data from a service that 
+                            supports OAuth2 access (such as Google or Facebook).</td>
+                        <td>Low</td>
+                    </tr>
+                    <tr>
+                        <td>dns</td>
+                        <td>Enables an extension to resolve domain names.</td>
+                        <td>Low</td>
+                    </tr>
+                    <tr>
+                        <td>tabHide</td>
+                        <td>Hides one or more tabs.<br>
 
-                        Hidden tabs are no longer visible in the browser's tabstrip. 
-                        Hidden tabs are not automatically discarded: the code 
-                        running in them continues to run.
-                    </td>
-                    <td>Low</td>
-                </tr>
-                <tr>
-                    <td>theme</td>
-                    <td>Define a static theme to apply to Firefox.</td>
-                    <td>Low</td>
-                </tr>
-            </table>
-            <a id="reportBtn" class="btn btn-primary d-inline float-end" href="extrack.html" role="button">Close</a>
-            <a id="reportBtn" class="btn btn-secondary float-end" href="summary.html" role="button">Summary</a>
+                            Hidden tabs are no longer visible in the browser's tabstrip. 
+                            Hidden tabs are not automatically discarded: the code 
+                            running in them continues to run.
+                        </td>
+                        <td>Low</td>
+                    </tr>
+                    <tr>
+                        <td>theme</td>
+                        <td>Define a static theme to apply to Firefox.</td>
+                        <td>Low</td>
+                    </tr>
+                </table>
+                <a style="margin-left: 2px; margin-right: 2px;" class="btn btn-primary d-inline float-end" href="extrack.html" role="button">Close</a>
+                <a style="margin-left: 2px; margin-right: 2px;" class="btn btn-secondary float-end" href="summary.html" role="button">Summary</a>
+            </div>
         </div>
-      </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
   </body>
