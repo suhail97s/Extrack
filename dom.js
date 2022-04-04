@@ -6,7 +6,7 @@ var seen = {};
 addTable(linkArray1,resultsArray2);
 function addTable(linkArray1,resultsArray2){
     var table = document.getElementById("table");
-    if(linkArray1.length != 0){
+    if(linkArray1 != null){
         for (var i = 0; i < linkArray1.length; i++) {
             /*=================== CHECK FOR DUPLICATE LINKS =================== */
             if (!(linkArray1[i] in seen)) {
